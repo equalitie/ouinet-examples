@@ -8,8 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import ie.equalit.ouinet.Config
-import ie.equalit.ouinet.Ouinet
+import ie.equalit.ouinet_examples.android_kotlin.components.Ouinet
 import okhttp3.*
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -28,7 +27,7 @@ import java.util.concurrent.Executors
 import javax.net.ssl.*
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var ouinet: Ouinet
+    private val ouinet by lazy { Ouinet(this) }
     lateinit var ouinetDir: String
     private val TAG = "OuinetTester"
 
@@ -39,18 +38,15 @@ class MainActivity : AppCompatActivity() {
         val get = findViewById<Button>(R.id.get)
         get.setOnClickListener{ getURL(get) }
 
-        var config = Config.ConfigBuilder(this)
-            .setCacheType("bep5-http")
-            .setTlsCaCertStorePath("file:///android_asset/cacert.pem")
-            .setCacheHttpPubKey(BuildConfig.CACHE_PUB_KEY)
-            .setInjectorCredentials(BuildConfig.INJECTOR_CREDENTIALS)
-            .setInjectorTlsCert(BuildConfig.INJECTOR_TLS_CERT)
-            .build()
-        ouinetDir = config.ouinetDirectory
-
-        ouinet = Ouinet(this, config)
-        ouinet.start()
-
+        ouinet.setOnNotificationTapped {
+            ouinet.background.shutdown(false)
+        }
+        ouinet.setOnConfirmTapped {
+            ouinet.background.shutdown(true)
+        }
+        ouinet.setBackground(this)
+        ouinetDir = ouinet.config.ouinetDirectory
+        ouinet.background.startup()
         Executors.newFixedThreadPool(1).execute(Runnable { this.updateOuinetState() })
     }
 
@@ -62,7 +58,7 @@ class MainActivity : AppCompatActivity() {
             } catch (e: InterruptedException) {
                 e.printStackTrace()
             }
-            val state = ouinet.state.toString()
+            val state = ouinet.background.getState()
             runOnUiThread { ouinetState.text = "State: $state" }
         }
     }

@@ -3,6 +3,8 @@
           package="ie.equalit.ouinet_examples.android_kotlin">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
     <application
             android:allowBackup="true"
@@ -20,6 +22,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <service
+            android:name="ie.equalit.ouinet.OuinetService"
+            android:enabled="true"
+            android:exported="false"
+            android:isolatedProcess="false"
+            android:process=":ouinetService"/>
     </application>
 
 </manifest>

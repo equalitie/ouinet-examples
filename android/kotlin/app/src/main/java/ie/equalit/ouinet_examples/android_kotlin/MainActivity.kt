@@ -1,6 +1,9 @@
 package ie.equalit.ouinet_examples.android_kotlin
 
+import android.app.ActivityManager
+import android.content.Context
 import android.os.Bundle
+import android.os.Process
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -25,6 +28,7 @@ import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.util.concurrent.Executors
 import javax.net.ssl.*
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
     private val ouinet by lazy { Ouinet(this) }
@@ -39,15 +43,42 @@ class MainActivity : AppCompatActivity() {
         get.setOnClickListener{ getURL(get) }
 
         ouinet.setOnNotificationTapped {
-            ouinet.background.shutdown(false)
+            beginShutdown(false)
         }
         ouinet.setOnConfirmTapped {
-            ouinet.background.shutdown(true)
+            beginShutdown(true)
         }
         ouinet.setBackground(this)
         ouinetDir = ouinet.config.ouinetDirectory
         ouinet.background.startup()
         Executors.newFixedThreadPool(1).execute(Runnable { this.updateOuinetState() })
+    }
+
+    private fun exitOuinetServiceProcess() {
+        getSystemService(Context.ACTIVITY_SERVICE).let { am ->
+            (am as ActivityManager).runningAppProcesses?.let { processes ->
+                for (process in processes) {
+                    if (process.processName.contains("ouinetService")){
+                        Process.killProcess(process.pid)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun beginShutdown(doClear : Boolean) {
+        ouinet.background.shutdown(doClear)
+        {
+            if(doClear) {
+                val am = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+                am.clearApplicationUserData()
+            }
+            /*  For some reason, exitProcess(0) fails to kill the ouinetService
+             *  so use this shutdown method callback to force exit it
+             *  eventually exitOuinetServiceProcess method can be moved to ouinet AAR */
+            exitOuinetServiceProcess()
+            exitProcess(0)
+        }
     }
 
     private fun updateOuinetState() {

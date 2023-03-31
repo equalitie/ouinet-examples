@@ -2,6 +2,8 @@ package ie.equalit.ouinet_examples.android_kotlin
 
 import android.app.ActivityManager
 import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.Process
 import android.util.Log
@@ -12,6 +14,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ie.equalit.ouinet_examples.android_kotlin.components.Ouinet
+import ie.equalit.ouinet_examples.android_kotlin.components.PermissionHandler
+import ie.equalit.ouinet_examples.android_kotlin.components.PermissionHandler.Companion.PERMISSION_CODE_IGNORE_BATTERY_OPTIMIZATIONS
 import okhttp3.*
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -34,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     private val ouinet by lazy { Ouinet(this) }
     lateinit var ouinetDir: String
     private val TAG = "OuinetTester"
+    private val pHandler = PermissionHandler(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +46,13 @@ class MainActivity : AppCompatActivity() {
 
         val get = findViewById<Button>(R.id.get)
         get.setOnClickListener{ getURL(get) }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            pHandler.requestPostNotificationPermission(this)
+        }
+        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pHandler.requestBatteryOptimizationsOff(this)
+        }
 
         ouinet.setOnNotificationTapped {
             beginShutdown(false)
@@ -78,6 +90,13 @@ class MainActivity : AppCompatActivity() {
              *  eventually exitOuinetServiceProcess method can be moved to ouinet AAR */
             exitOuinetServiceProcess()
             exitProcess(0)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PERMISSION_CODE_IGNORE_BATTERY_OPTIMIZATIONS) {
+            pHandler.isIgnoringBatteryOptimizations()
         }
     }
 

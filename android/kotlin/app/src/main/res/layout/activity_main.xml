@@ -59,7 +59,55 @@
                 android:onClick="startOuinet"
                 android:text="@string/start" />
 
-            <Button
+        <TextView
+            android:id="@+id/groups"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:id="@+id/cache_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:textAlignment="center"
+            android:textSize="16sp"
+            />
+
+        <Button
+            android:id="@+id/restart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:text="@string/restart"
+            />
+
+        <Button
+            android:id="@+id/clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:text="@string/clear"
+            />
+
+        <EditText
+            android:id="@+id/url"
+                android:layout_width="321dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:text="@string/url_example"
+                android:textAlignment="center"
+                />
+
+        <Button
                 android:id="@+id/get"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

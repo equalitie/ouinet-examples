@@ -35,27 +35,51 @@ import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.util.concurrent.Executors
 import javax.net.ssl.*
+import kotlin.math.floor
+import kotlin.math.ln
+import kotlin.math.pow
 import kotlin.system.exitProcess
+
 
 class MainActivity : AppCompatActivity() {
     private val ouinet by lazy { Ouinet(this) }
     lateinit var ouinetDir: String
     private val TAG = "OuinetTester"
     private val pHandler = PermissionHandler(this)
+    private lateinit var mGroupsView : TextView
+    private lateinit var mCacheView : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        mGroupsView = findViewById<View>(R.id.groups) as TextView
+        mGroupsView.text = String.format(getString(R.string.groups_text), 0)
+
+        mCacheView = findViewById<View>(R.id.cache_size) as TextView
+        mCacheView.text = String.format(getString(R.string.cache_text), 0)
+
+        val restart = findViewById<Button>(R.id.restart)
+        restart.setOnClickListener{
+            ouinet.background.stop {
+                ouinet.background.start()
+            }
+        }
+
+        val clear = findViewById<Button>(R.id.clear)
+        clear.setOnClickListener{ clearCache() }
+
         val get = findViewById<Button>(R.id.get)
         get.setOnClickListener{ getURL(get) }
 
+        /*
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             pHandler.requestPostNotificationPermission(this)
         }
         else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             pHandler.requestBatteryOptimizationsOff(this)
         }
+         */
 
         ouinet.setOnNotificationTapped {
             beginShutdown(false)
@@ -137,6 +161,142 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun log2(n: Int): Double {
+        return ln(n.toDouble()) / ln(2.0)
+    }
+
+    private fun bytesToString(b: Int): String {
+        // originally from <https://stackoverflow.com/a/42408230>
+        // ported from extension JS code to kotlin
+        if (b == 0) {
+            return "0 B"
+        }
+        val i = floor(log2(b) / 10).toInt()
+        val v = b / 1024.0.pow(i)
+        val u = "KMGTPEZY"[i - 1] + "iB";
+        return String.format("%.2f %s", v, u)
+    }
+
+    fun getGroups() {
+        val url = "http://127.0.0.1:8078/groups.txt"
+
+        val client: OkHttpClient = getOuinetHttpClient()
+        val request: Request = Request.Builder()
+            .url(url)
+            .header("X-Ouinet-Group", getDhtGroup(url))
+            .build()
+
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                //runOnUiThread { logViewer.text = e.toString() }
+            }
+
+            @Throws(IOException::class)
+            override fun onResponse(call: Call, response: Response) {
+                response.body.use { body ->
+                    val responseHeaders = response.headers
+                    var i = 0
+                    val size = responseHeaders.size
+                    while (i < size) {
+                        println(responseHeaders.name(i) + ": " + responseHeaders.value(i))
+                        i++
+                    }
+                    body?.let {
+                        val groups = it.string().reader().readLines()
+                        Log.d(TAG, "Count of sites cached: ${groups.count()}")
+                        Log.d(TAG, "Sites cached: $groups")
+                        runOnUiThread {
+                            mGroupsView.text = String.format(
+                                getString(R.string.groups_text),
+                                groups.count()
+                            )
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    fun getStatus() {
+        val url = "http://127.0.0.1:8078/api/status"
+
+        val client: OkHttpClient = getOuinetHttpClient()
+        val request: Request = Request.Builder()
+            .url(url)
+            .header("X-Ouinet-Group", getDhtGroup(url))
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
+
+            @Throws(IOException::class)
+            override fun onResponse(call: Call, response: Response) {
+                response.body.use { body ->
+                    val responseHeaders = response.headers
+                    var i = 0
+                    val size = responseHeaders.size
+                    while (i < size) {
+                        println(responseHeaders.name(i) + ": " + responseHeaders.value(i))
+                        i++
+                    }
+                    body?.let {
+                        val status = it.string()
+                        Log.d(TAG, "Ouinet status: $status")
+                        val statusArr = status.split(",")
+                        for (entry in statusArr) {
+                            if (entry.contains("local_cache_size")){
+                                val cacheSize = entry.substring(entry.indexOf(":") + 1)
+                                val byteString = bytesToString(cacheSize.toInt())
+                                Log.d(TAG, "Ouinet cache size: $cacheSize")
+                                runOnUiThread {
+                                    mCacheView.text = String.format(
+                                        getString(R.string.cache_text),
+                                        byteString
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+    fun clearCache() {
+        val url = "http://127.0.0.1:8078/?purge_cache=do"
+
+        val client: OkHttpClient = getOuinetHttpClient()
+        val request: Request = Request.Builder()
+            .url(url)
+            .header("X-Ouinet-Group", getDhtGroup(url))
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
+
+            @Throws(IOException::class)
+            override fun onResponse(call: Call, response: Response) {
+                response.body.use { body ->
+                    val responseHeaders = response.headers
+                    var i = 0
+                    val size = responseHeaders.size
+                    while (i < size) {
+                        println(responseHeaders.name(i) + ": " + responseHeaders.value(i))
+                        i++
+                    }
+                }
+                getGroups()
+                getStatus()
+            }
+        })
+    }
+
     fun getURL(view: View?) {
         val editText = findViewById<View>(R.id.url) as EditText
         val logViewer = findViewById<View>(R.id.log_viewer) as TextView
@@ -189,6 +349,8 @@ class MainActivity : AppCompatActivity() {
                 runOnUiThread {
                     logViewer.text = responseHeaders.toString()
                 }
+                getGroups()
+                getStatus()
             }
         })
     }

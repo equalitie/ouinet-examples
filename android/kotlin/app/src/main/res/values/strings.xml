@@ -3,6 +3,10 @@
     <string name="url_example">https://censorship.no</string>
     <string name="get">Get</string>
     <string name="app_title">Ouinet Tester</string>
+    <string name="groups_text">Groups count: %d</string>
+    <string name="cache_text">Cache size: %s</string>
+    <string name="restart">Restart</string>
+    <string name="clear">Clear</string>
 
     <string name="app_notification_title">app2 Browser Service</string>
     <string name="app_notification_description">Tap to stop</string>

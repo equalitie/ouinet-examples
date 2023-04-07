@@ -2,8 +2,8 @@ package ie.equalit.ouinet_examples.android_kotlin
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.espresso.assertion.ViewAssertions.*
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -11,6 +11,7 @@ import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.io.InputStream
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
@@ -43,9 +44,18 @@ class OuinetStressTest {
         onView(withId(R.id.groups)).check(matches(withText("Groups count: 0")))
     }
 
+    private fun openTestFile(): InputStream? {
+        return javaClass.classLoader?.getResourceAsStream(TEST_FILE)
+    }
+
     private fun requestUrl (url : String) {
         onView(withId(R.id.url))
-            .perform(replaceText(url), closeSoftKeyboard())
+            .perform(replaceText(
+                if (url.startsWith(HTTPS))
+                    url
+                else
+                    HTTPS + url
+            ), closeSoftKeyboard())
         onView(withId(R.id.get)).perform(click())
     }
 
@@ -53,6 +63,14 @@ class OuinetStressTest {
         /* loop through list of sites to request */
         for (i in 1..n) {
             requestUrl(BASE_URL + i.toString())
+            Thread.sleep(1000)
+        }
+    }
+
+    private fun requestUrlList(list : List<String>) {
+        /* loop through list of sites to request */
+        for (url in list) {
+            requestUrl(url)
             Thread.sleep(1000)
         }
     }
@@ -114,7 +132,31 @@ class OuinetStressTest {
         checkOuinetClear()
     }
 
+    @Test
+    fun testRequestTwoThousandFiveSitesRestart() {
+        testOuinetStarted()
+        requestUrlLoop(2500)
+        Thread.sleep(5000)
+        checkOuinetRestarted()
+    }
+
+    @Test
+    fun testRequestListMultipleRestart() {
+        testOuinetStarted()
+        val groupsTxt = openTestFile()
+        assertNotEquals(groupsTxt, null)
+        val groups = groupsTxt?.reader()?.use { it.readLines() }
+        assertNotEquals(groups, null)
+        requestUrlList(groups!!)
+        Thread.sleep(5000)
+        checkOuinetRestarted()
+        checkOuinetRestarted()
+        checkOuinetRestarted()
+    }
+
     companion object {
-        val BASE_URL = "https://es.wikipedia.org/wiki/"
+        const val BASE_URL = "https://es.wikipedia.org/wiki/"
+        const val HTTPS = "https://"
+        const val TEST_FILE = "groups.txt"
     }
 }

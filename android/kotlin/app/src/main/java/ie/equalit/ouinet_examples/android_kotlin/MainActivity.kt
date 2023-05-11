@@ -8,8 +8,12 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import ie.equalit.ouinet_examples.android_kotlin.ExampleApp.Companion.cleanInsights
 import ie.equalit.ouinet_examples.android_kotlin.components.Ouinet
 import okhttp3.*
+import org.cleaninsights.sdk.CleanInsights
+import org.cleaninsights.sdk.ConsentRequestUi
+import org.cleaninsights.sdk.Feature
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -30,6 +34,8 @@ class MainActivity : AppCompatActivity() {
     private val ouinet by lazy { Ouinet(this) }
     lateinit var ouinetDir: String
     private val TAG = "OuinetTester"
+    private val start = System.currentTimeMillis()
+    private var firstTime = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +53,45 @@ class MainActivity : AppCompatActivity() {
         ouinet.setBackground(this)
         ouinetDir = ouinet.config.ouinetDirectory
         ouinet.background.startup()
+        val consents= findViewById<Button>(R.id.consents)
+        consents.setOnClickListener{
+            startActivity(Intent(this, ConsentsActivity::class.java))
+        }
         Executors.newFixedThreadPool(1).execute(Runnable { this.updateOuinetState() })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (firstTime) {
+            val ui = ConsentRequestUi(this)
+
+            cleanInsights.requestConsent("test", ui) { granted ->
+                if (!granted) return@requestConsent
+
+                cleanInsights.requestConsent(Feature.Lang, ui) {
+                    cleanInsights.requestConsent(Feature.Ua, ui)
+                }
+
+                val time = (System.currentTimeMillis() - start) / 1000.0
+
+                cleanInsights.measureEvent("app-state", "startup-success", "test", "time-needed", time)
+                cleanInsights.measureVisit(listOf("Main"), "test")
+            }
+
+            firstTime = false
+        }
+        else {
+            cleanInsights.measureVisit(listOf("Main"), "test")
+        }
+
+        cleanInsights.testServer {
+            if (it != null) {
+                Log.e("Server Test", "Exception!")
+                it.printStackTrace()
+            } else {
+                Log.i("Server Test", "No exception - works!")
+            }
+        }
     }
 
     private fun updateOuinetState() {

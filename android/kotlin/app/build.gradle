@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id "io.sentry.android.gradle" version "3.5.0"
 }
 
 Properties localProperties = new Properties()
@@ -46,7 +47,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.6.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'ie.equalit.ouinet:ouinet-omni:0.21.9'
+    implementation 'ie.equalit.ouinet:ouinet-omni:0.21.10'
     implementation 'com.getkeepsafe.relinker:relinker:1.4.4'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     implementation 'androidx.test:rules:1.4.0'

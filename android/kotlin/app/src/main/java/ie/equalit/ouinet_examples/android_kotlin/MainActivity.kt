@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ie.equalit.ouinet_examples.android_kotlin.components.Ouinet
+import io.sentry.Sentry
 import okhttp3.*
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         val get = findViewById<Button>(R.id.get)
         get.setOnClickListener{ getURL(get) }
 
+        /*
         ouinet.setOnNotificationTapped {
             ouinet.background.shutdown(false)
         }
@@ -46,8 +48,17 @@ class MainActivity : AppCompatActivity() {
         }
         ouinet.setBackground(this)
         ouinetDir = ouinet.config.ouinetDirectory
-        ouinet.background.startup()
+        ouinet.background.startup {
+        }
         Executors.newFixedThreadPool(1).execute(Runnable { this.updateOuinetState() })
+         */
+        Log.d(TAG, "onCreate, test sentry")
+        Sentry.captureMessage("testing SDK setup")
+        try {
+            throw Exception("This is a test.")
+        } catch (e: Exception) {
+            Sentry.captureException(e)
+        }
     }
 
     private fun updateOuinetState() {
@@ -70,10 +81,18 @@ class MainActivity : AppCompatActivity() {
         val toast = Toast.makeText(this, "Loading: $url", Toast.LENGTH_SHORT)
         toast.show()
 
-        val client: OkHttpClient = getOuinetHttpClient()
+        Sentry.captureMessage("Getting url: $url")
+        try {
+            throw Exception("This is a test.")
+        } catch (e: Exception) {
+            Log.d(TAG, "Exception caught, test sentry")
+            Sentry.captureException(e)
+        }
+
+        val client: OkHttpClient = OkHttpClient.Builder().build() //getOuinetHttpClient()
         val request: Request = Request.Builder()
             .url(url)
-            .header("X-Ouinet-Group", getDhtGroup(url))
+            //.header("X-Ouinet-Group", getDhtGroup(url))
             .build()
 
 

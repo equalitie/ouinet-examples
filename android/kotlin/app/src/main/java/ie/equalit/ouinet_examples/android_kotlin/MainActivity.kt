@@ -1,6 +1,10 @@
 package ie.equalit.ouinet_examples.android_kotlin
 
+import android.app.ActivityManager
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.os.Process
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -11,9 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import ie.equalit.ouinet_examples.android_kotlin.ExampleApp.Companion.cleanInsights
 import ie.equalit.ouinet_examples.android_kotlin.components.Ouinet
 import okhttp3.*
-import org.cleaninsights.sdk.CleanInsights
-import org.cleaninsights.sdk.ConsentRequestUi
-import org.cleaninsights.sdk.Feature
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -29,6 +30,7 @@ import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.util.concurrent.Executors
 import javax.net.ssl.*
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
     private val ouinet by lazy { Ouinet(this) }
@@ -45,14 +47,37 @@ class MainActivity : AppCompatActivity() {
         get.setOnClickListener{ getURL(get) }
 
         ouinet.setOnNotificationTapped {
+            val startShutdown = System.currentTimeMillis()
             ouinet.background.shutdown(false)
+            {
+                val time = (System.currentTimeMillis() - startShutdown) / 1000.0
+                cleanInsights.measureEvent("ouinet-client", "ouinet-stop", "test", "time-needed", time)
+                cleanInsights.measureVisit(listOf("Ouinet Stop Complete"), "test")
+                exitOuinetServiceProcess()
+                exitProcess(0)
+            }
         }
         ouinet.setOnConfirmTapped {
+            val startClear = System.currentTimeMillis()
             ouinet.background.shutdown(true)
+            {
+                val time = (System.currentTimeMillis() - startClear) / 1000.0
+                cleanInsights.measureEvent("ouinet-client", "ouinet-stop-clear", "test", "time-needed", time)
+                cleanInsights.measureVisit(listOf("Ouinet Stop Clear Complete"), "test")
+                val am = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+                am.clearApplicationUserData()
+                exitOuinetServiceProcess()
+                exitProcess(0)
+            }
         }
         ouinet.setBackground(this)
         ouinetDir = ouinet.config.ouinetDirectory
-        ouinet.background.startup()
+        val startup = System.currentTimeMillis()
+        ouinet.background.startup {
+            val time = (System.currentTimeMillis() - startup) / 1000.0
+            cleanInsights.measureEvent("ouinet-client", "ouinet-startup", "test", "time-needed", time)
+            cleanInsights.measureVisit(listOf("Ouinet Startup Complete"), "test")
+        }
         val consents= findViewById<Button>(R.id.consents)
         consents.setOnClickListener{
             startActivity(Intent(this, ConsentsActivity::class.java))
@@ -68,9 +93,9 @@ class MainActivity : AppCompatActivity() {
             cleanInsights.requestConsent("test", ui) { granted ->
                 if (!granted) return@requestConsent
 
-                cleanInsights.requestConsent(Feature.Lang, ui) {
-                    cleanInsights.requestConsent(Feature.Ua, ui)
-                }
+                //cleanInsights.requestConsent(Feature.Lang, ui) {
+                //    cleanInsights.requestConsent(Feature.Ua, ui)
+                //}
 
                 val time = (System.currentTimeMillis() - start) / 1000.0
 
@@ -90,6 +115,18 @@ class MainActivity : AppCompatActivity() {
                 it.printStackTrace()
             } else {
                 Log.i("Server Test", "No exception - works!")
+            }
+        }
+    }
+
+    private fun exitOuinetServiceProcess() {
+        getSystemService(Context.ACTIVITY_SERVICE).let { am ->
+            (am as ActivityManager).runningAppProcesses?.let { processes ->
+                for (process in processes) {
+                    if (process.processName.contains("ouinetService")){
+                        Process.killProcess(process.pid)
+                    }
+                }
             }
         }
     }

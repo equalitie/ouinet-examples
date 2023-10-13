@@ -3,6 +3,7 @@
 *.aar
 *.ap_
 *.aab
+*.framework
 
 # Files for the ART/Dalvik VM
 *.dex
@@ -83,3 +84,19 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+
+# Xcode
+.DS_Store
+*.pbxuser
+!default.pbxuser
+*.xcworkspace
+!default.xcworkspace
+*.xcworkspacedata
+*.xcuserstate
+*.xcscheme
+xcschememanagement.plist
+*.xcbkptlist
+.LSOverride
+
+# ouinet-ios.framework headers
+ios/swift/OuinetExample/OuinetExample/Ouinet

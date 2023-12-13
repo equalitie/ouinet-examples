@@ -32,6 +32,7 @@ extension FileManager {
 struct OuinetExampleApp: App {
     var client : Client
     init() {
+        UIApplication.shared.isIdleTimerDisabled = true
         let config = Config.init()
         do {
             try FileManager.default.copyFileToDirectory(fileName: "cacert.pem", toPath: config!.getOuinetDirectory())

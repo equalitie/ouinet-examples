@@ -14,9 +14,10 @@ struct ContentView: View {
     @ObservedObject var store: OuinetStatusStore
     //@State private var selectedCipher: CipherSuite = .RSA_WITH_AES_256_GCM_SHA384
     //@State private var selectedVersion: ProtocolVersion = .TLSv13
+    @State var isDownloadPresented = false
+    @State var isSettingsPresented = false
     @State var isUrlSessionPresented = false
     @State var isWebViewPresented = false
-
     
     init(client: Client) {
         self.client = client
@@ -40,18 +41,18 @@ struct ContentView: View {
                     }
                 }
                 */
-                /* TODO: Not able to complete download of CA cert yet
-                Button(action: {
-                    print("Downloading CA cert?")
-                }){
-                    Text("Download CA cert")
-                        .foregroundColor(.blue)
-                }
-                 */
                 Text("\(store.ouinetStatus.state)")
+                Button("Download CA Cert") {
+                    isDownloadPresented = true
+                }
+                Button("Open Ouinet Settings") {
+                    isSettingsPresented = true
+                }
+                /*
                 Button("Test UrlSession") {
                     isUrlSessionPresented = true
                 }
+                 */
                 Button("Test WebView") {
                     isWebViewPresented = true
                 }
@@ -60,16 +61,24 @@ struct ContentView: View {
                 await store.loadStats()
             }
             .navigationTitle("Ouinet Example")
+            .sheet(isPresented: $isDownloadPresented){
+                // TODO: using a Safari view is a workaround to download the certificate
+                // safari has some magic sauce that lets put cert in correct location for install
+                SFSafariView(url: URL(string: "http://localhost:9078/ca.pem")!)
+            }
+            .sheet(isPresented: $isSettingsPresented){
+                SFSafariView(url: URL(string: "http://localhost:9078/")!)
+            }
+            /*
             .sheet(isPresented: $isUrlSessionPresented) {
                 UrlSessionUIView()
                     .presentationDetents([.fraction(0.88)])
-
             }
+             */
             .sheet(isPresented: $isWebViewPresented) {
                 WebKitUIView()
                     .presentationDetents([.fraction(0.88)])
             }
-            
         }
     }
 }

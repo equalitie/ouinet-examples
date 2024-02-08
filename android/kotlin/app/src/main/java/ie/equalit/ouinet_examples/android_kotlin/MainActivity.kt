@@ -10,10 +10,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ie.equalit.ouinet_examples.android_kotlin.components.Ouinet
 import okhttp3.*
+import java.io.BufferedReader
 import java.io.FileInputStream
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.io.InputStream
+import java.io.Reader
 import java.net.InetSocketAddress
 import java.net.Proxy
 import java.net.URI
@@ -85,15 +87,35 @@ class MainActivity : AppCompatActivity() {
 
             @Throws(IOException::class)
             override fun onResponse(call: Call, response: Response) {
-                response.body.use { _ ->
-                    val responseHeaders = response.headers
-                    var i = 0
-                    val size = responseHeaders.size
-                    while (i < size) {
-                        println(responseHeaders.name(i) + ": " + responseHeaders.value(i))
-                        i++
+                val responseHeaders = response.headers
+                var i = 0
+                val size = responseHeaders.size
+                while (i < size) {
+                    println(responseHeaders.name(i) + ": " + responseHeaders.value(i))
+                    i++
+                }
+                /* Consume the response body in an async thread */
+                val thread = Thread {
+                    try {
+                        if (response.isSuccessful) {
+                            println("Response ready")
+                            val `in`: Reader? = response.body?.charStream()
+                            val reader = BufferedReader(`in`)
+                            var line: String? = reader.readLine()
+                            while (line != null) {
+                                println(line)
+                                line = reader.readLine()
+                            }
+                            reader.close()
+                            `in`?.close()
+                        }
+                    } catch (e: java.lang.Exception) {
+                        e.printStackTrace()
                     }
-                    runOnUiThread { logViewer.text = responseHeaders.toString() }
+                }
+                thread.start()
+                runOnUiThread {
+                    logViewer.text = responseHeaders.toString()
                 }
             }
         })

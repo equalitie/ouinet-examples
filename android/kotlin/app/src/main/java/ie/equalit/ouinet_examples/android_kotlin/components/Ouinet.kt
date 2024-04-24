@@ -19,6 +19,8 @@ class Ouinet (
             .setTlsCaCertStorePath(context.resources.getString(R.string.cacert_file_path))
             .setCacheType(context.resources.getString(R.string.cache_type))
             .setLogLevel(Config.LogLevel.DEBUG)
+            //.setDisableBridgeAnnouncement(true)
+            //.setDisableOriginAccess(true)
             //.setBtBootstrapExtras(getBtBootstrapExtras())
             .setListenOnTcp(context.resources.getString(R.string.loopback_ip) + ":" + BuildConfig.PROXY_PORT)
             .setFrontEndEp(context.resources.getString(R.string.loopback_ip) + ":" + BuildConfig.FRONTEND_PORT)

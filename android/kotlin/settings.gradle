@@ -4,6 +4,14 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
 
+        //maven {
+        //    url "https://s01.oss.sonatype.org/content/repositories/ieequalitouinet-1234"
+        //    content {
+        //        // this repository *only* contains artifacts with group "ie.equalit.ouinet"
+        //        includeGroup "ie.equalit.ouinet"
+        //    }
+        //}
+
         //flatDir {
         //    dirs 'app/libs'
         //}

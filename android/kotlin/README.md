@@ -7,8 +7,8 @@ Add Ouinet lib and Relinker to your dependencies list in **app/build.gradle**:
 ```groovy
 dependencies {
     // ...
-    implementation 'ie.equalit.ouinet:ouinet-armeabi-v7a:0.20.0'
-    implementation 'com.getkeepsafe.relinker:relinker:1.4.4'
+    implementation("ie.equalit.ouinet:ouinet-arm64-v8a:0.24.0")
+    implementation("com.getkeepsafe.relinker:relinker:1.4.4")
 }
 ```
 

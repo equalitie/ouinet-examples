@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import ie.equalit.ouinet_examples.android_kotlin.components.Ouinet
 import okhttp3.*
 import java.io.BufferedReader
@@ -48,12 +49,21 @@ class MainActivity : AppCompatActivity() {
         }
         ouinet.setBackground(this)
         ouinetDir = ouinet.config.ouinetDirectory
-        ouinet.background.startup()
         Executors.newFixedThreadPool(1).execute(Runnable { this.updateOuinetState() })
+    }
+
+    fun startOuinet(view: View?) {
+        val toast = Toast.makeText(this, "Starting Ouinet service", Toast.LENGTH_SHORT)
+        ouinet.background.startup()
+        toast.show()
     }
 
     private fun updateOuinetState() {
         val ouinetState = findViewById<View>(R.id.status) as TextView
+        val buttonGet = findViewById<View>(R.id.get) as Button
+        val buttonStart = findViewById<View>(R.id.start) as Button
+        val urlInput = findViewById<View>(R.id.url) as EditText
+
         while (true) {
             try {
                 Thread.sleep(1000)
@@ -61,7 +71,19 @@ class MainActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
             val state = ouinet.background.getState()
-            runOnUiThread { ouinetState.text = "State: $state" }
+            runOnUiThread {
+                ouinetState.text = "State: $state"
+
+                if (state == "Started") {
+                    buttonGet.isVisible = true
+                    buttonStart.isVisible = false
+                    urlInput.isVisible = true
+                } else {
+                    buttonGet.isVisible = false
+                    buttonStart.isVisible = true
+                    urlInput.isVisible = false
+                }
+            }
         }
     }
 

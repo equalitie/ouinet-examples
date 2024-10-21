@@ -7,16 +7,16 @@ Properties localProperties = new Properties()
 localProperties.load(rootProject.file('local.properties').newDataInputStream())
 
 android {
-    compileSdk 33
-    buildToolsVersion rootProject.buildToolsVersion
+    compileSdk 34
     defaultConfig {
         applicationId "ie.equalit.ouinet_examples.android_kotlin"
         minSdk 21
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
 
         buildConfigField "String", "CACHE_PUB_KEY", localProperties['CACHE_PUB_KEY']
         buildConfigField "String", "INJECTOR_CREDENTIALS", localProperties['INJECTOR_CREDENTIALS']
@@ -24,7 +24,9 @@ android {
         buildConfigField "String", "PROXY_PORT", localProperties['PROXY_PORT']
         buildConfigField "String", "FRONTEND_PORT", localProperties['FRONTEND_PORT']
     }
-
+    testOptions {
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -43,24 +45,23 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'ie.equalit.ouinet:ouinet-omni:0.24.0'
+    implementation libs.androidx.corektx
+    implementation libs.androidx.appcompat
+    implementation libs.google.material
+    implementation libs.androidx.constraintlayout
+    implementation libs.ouinet.omni
     //implementation(name:'ouinet-debug', ext:'aar')
-    implementation 'com.getkeepsafe.relinker:relinker:1.4.4'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
-    implementation 'androidx.test:rules:1.5.0'
+    implementation libs.relinker
+    implementation libs.okhttp3
+    implementation libs.tools.testrules
 
-    testImplementation 'junit:junit:4.+'
-    //noinspection GradleDependency
-    androidTestImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-    androidTestImplementation 'androidx.test:core:' + rootProject.coreVersion
-    androidTestImplementation 'androidx.test:core-ktx:' + rootProject.coreVersion
-    androidTestImplementation 'androidx.test.ext:junit:' + rootProject.extJUnitVersion
-    androidTestImplementation 'androidx.test.ext:junit-ktx:' + rootProject.extJUnitVersion
-    androidTestImplementation 'androidx.test:runner:' + rootProject.runnerVersion
-    androidTestImplementation 'androidx.test.espresso:espresso-core:' + rootProject.espressoVersion
-    androidTestImplementation 'androidx.test:rules:' + rootProject.runnerVersion
+    testImplementation libs.junit
+    androidTestImplementation libs.tools.kotlinstdlib
+    androidTestImplementation  libs.tools.testcorektx
+    androidTestImplementation libs.tools.junit
+    androidTestImplementation libs.tools.junitktx
+    androidTestImplementation libs.tools.testrunner
+    androidTestImplementation libs.espresso.core
+    androidTestImplementation libs.tools.testrules
+    androidTestImplementation libs.orchestrator
 }

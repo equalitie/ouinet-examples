@@ -1,0 +1,51 @@
+[versions]
+
+# AndroidX
+androidx_appcompat = "1.7.0"
+androidx_constraintlayout = "2.1.4"
+androidx_core = "1.13.1"
+
+# Google
+google_material = "1.12.0"
+
+# Gradle
+#noinspection AndroidGradlePluginVersion
+gradle = "8.3.2"
+gradle_kotlin_plugin = "1.9.24"
+
+# Testing
+testing_androidx_core = "1.6.1"
+testing_androidx_espresso = "3.6.1"
+testing_androidx_ext_junit = "1.2.1"
+testing_androidx_orchestrator = "1.5.1"
+testing_junit = "4.13.2"
+
+# Ouinet
+ouinet_version = "0.30.0"
+relinker_version = "1.4.4"
+okhttp3_version = "4.10.0"
+
+[libraries]
+
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx_appcompat" }
+androidx-corektx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx_core" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx_constraintlayout" }
+
+google-material = { group = "com.google.android.material", name = "material", version.ref = "google_material" }
+
+gradle = { group = "com.android.tools.build", name="gradle", version.ref = "gradle" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name="kotlin-gradle-plugin", version.ref = "gradle_kotlin_plugin" }
+tools-kotlinstdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "gradle_kotlin_plugin" }
+
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "testing_androidx_espresso" }
+junit = { group = "junit", name = "junit", version.ref = "testing_junit" }
+orchestrator = { group = "androidx.test", name = "orchestrator", version.ref = "testing_androidx_orchestrator" }
+tools-junit = { group = "androidx.test.ext", name = "junit", version.ref = "testing_androidx_ext_junit" }
+tools-junitktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "testing_androidx_ext_junit" }
+tools-testcorektx = { group = "androidx.test", name = "core-ktx", version.ref = "testing_androidx_core" }
+tools-testrules = { group = "androidx.test", name = "rules", version.ref = "testing_androidx_core" }
+tools-testrunner = { group = "androidx.test", name = "runner", version.ref = "testing_androidx_core" }
+
+ouinet-omni = { group = "ie.equalit.ouinet", name = "ouinet-omni", version.ref = "ouinet_version" }
+relinker = { group = "com.getkeepsafe.relinker", name = "relinker", version.ref = "relinker_version" }
+okhttp3 = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp3_version"}

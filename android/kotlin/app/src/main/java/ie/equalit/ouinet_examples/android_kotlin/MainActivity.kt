@@ -134,6 +134,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateOuinetState() {
         val ouinetState = findViewById<View>(R.id.status) as TextView
+        val ouinetEndpoints = findViewById<View>(R.id.endpoints) as TextView
         val buttonGet = findViewById<View>(R.id.get) as Button
         val buttonStart = findViewById<View>(R.id.start) as Button
         val urlInput = findViewById<View>(R.id.url) as EditText
@@ -151,10 +152,16 @@ class MainActivity : AppCompatActivity() {
                 if (state == "Started") {
                     buttonGet.isVisible = true
                     buttonStart.isVisible = false
+                    ouinetEndpoints.isVisible = true
                     urlInput.isVisible = true
                 } else {
                     buttonGet.isVisible = false
                     buttonStart.isVisible = true
+                    ouinetEndpoints.isVisible = false
+                    val proxy_endpoint = ouinet.background.getProxyEndpoint()
+                    val frontend_endpoint = ouinet.background.getFrontendEndpoint()
+                    if (proxy_endpoint != null && frontend_endpoint != null)
+                        ouinetEndpoints.text = "P: " + proxy_endpoint.toString() + " / F: " + frontend_endpoint.toString()
                     urlInput.isVisible = false
                 }
             }
@@ -178,7 +185,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getGroups() {
-        val url = "http://127.0.0.1:8078/groups.txt"
+        val endpoint = ouinet.background.getFrontendEndpoint()
+        val url = "http://" + endpoint!!.toString() + "/groups.txt"
 
         val client: OkHttpClient = getOuinetHttpClient()
         val request: Request = Request.Builder()
@@ -220,7 +228,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getStatus() {
-        val url = "http://127.0.0.1:8078/api/status"
+        val endpoint = ouinet.background.getFrontendEndpoint()
+        val url = "http://" + endpoint!!.toString() + "/api/status"
 
         val client: OkHttpClient = getOuinetHttpClient()
         val request: Request = Request.Builder()
@@ -267,7 +276,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun clearCache() {
-        val url = "http://127.0.0.1:8078/?purge_cache=do"
+        val endpoint = ouinet.background.getFrontendEndpoint()
+        val url = "http://" + endpoint!!.toString() + "/?purge_cache=do"
 
         val client: OkHttpClient = getOuinetHttpClient()
         val request: Request = Request.Builder()
@@ -377,7 +387,9 @@ class MainActivity : AppCompatActivity() {
             )
 
             // Proxy to ouinet service
-            val ouinetService = Proxy(Proxy.Type.HTTP, InetSocketAddress("127.0.0.1", 8077))
+            val endpoint = ouinet.background.getProxyEndpoint()
+            val ouinetService = Proxy(Proxy.Type.HTTP,
+                InetSocketAddress(endpoint!!.getAddress(), endpoint!!.getPort()))
             builder.proxy(ouinetService)
             return builder.build()
         } catch (e: Exception) {

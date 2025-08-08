@@ -34,6 +34,15 @@
             android:textAlignment="center"
             android:textSize="16sp" />
 
+        <TextView
+            android:id="@+id/endpoints"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
         <EditText
             android:id="@+id/url"
             android:layout_width="321dp"

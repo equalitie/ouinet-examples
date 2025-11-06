@@ -1,5 +1,8 @@
 # Ouinet's test iOS application in Swift
 
+* [OuinetExample](ios/swift/OuinetExample) - most simple implementation of Ouinet for iOS
+* [OuinetClient](ios/swift/OuinetClient) - more complex example with several different methods for making requests to Ouinet client
+
 ## Prepare your app for using Ouinet
 
 Build `ouinet.xcframework` using https://gitlab.com/equalitie/ouinet/-/blob/main/scripts/build-darwin.sh

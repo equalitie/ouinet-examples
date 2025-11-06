@@ -7,10 +7,11 @@
 
 import SwiftUI
 import WebKit
+import Ouinet
 
 struct ContentView: View {
     @State var getUrl: String = "https://wikipedia.org"
-    @State var client: Client
+    @State var client: OuinetClient
     @ObservedObject var store: OuinetStatusStore
     //@State private var selectedCipher: CipherSuite = .RSA_WITH_AES_256_GCM_SHA384
     //@State private var selectedVersion: ProtocolVersion = .TLSv13
@@ -19,7 +20,7 @@ struct ContentView: View {
     @State var isUrlSessionPresented = false
     @State var isWebViewPresented = false
     
-    init(client: Client) {
+    init(client: OuinetClient) {
         self.client = client
         self.store = OuinetStatusStore(client: client)
     }

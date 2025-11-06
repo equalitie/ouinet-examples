@@ -12,11 +12,8 @@
 		9307DA592AB8DBA0009525A5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9307DA582AB8DBA0009525A5 /* Assets.xcassets */; };
 		9307DA5C2AB8DBA0009525A5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9307DA5B2AB8DBA0009525A5 /* Preview Assets.xcassets */; };
 		9343669F2B2A58E3000A5C94 /* SFSafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9343669E2B2A58E3000A5C94 /* SFSafariView.swift */; };
-		938C603B2AB8E2EB004FE3D5 /* Ouinet in Resources */ = {isa = PBXBuildFile; fileRef = 938C60392AB8E2EB004FE3D5 /* Ouinet */; };
 		938C603D2AB8E33B004FE3D5 /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = 938C603C2AB8E33B004FE3D5 /* cacert.pem */; };
 		938C60432AB8E565004FE3D5 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 938C60422AB8E565004FE3D5 /* Localizable.strings */; };
-		938F39992AE9A1FB0076CC25 /* ouinet-ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 938F39982AE9A1FB0076CC25 /* ouinet-ios.framework */; };
-		938F399A2AE9A1FB0076CC25 /* ouinet-ios.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 938F39982AE9A1FB0076CC25 /* ouinet-ios.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9391B37E2AD99CC80066476E /* WebKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9391B37D2AD99CC80066476E /* WebKitView.swift */; };
 		9391B3802AD99EC80066476E /* OuinetStatusStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9391B37F2AD99EC80066476E /* OuinetStatusStore.swift */; };
 		9391B3822AD99EE40066476E /* OuinetStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9391B3812AD99EE40066476E /* OuinetStatus.swift */; };
@@ -27,6 +24,8 @@
 		93D787642AD7220700140C30 /* WebKitUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D787632AD7220700140C30 /* WebKitUIView.swift */; };
 		93D787662AD728C200140C30 /* UrlSessionUIVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D787652AD728C200140C30 /* UrlSessionUIVIew.swift */; };
 		93D787682AD730DC00140C30 /* UrlSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D787672AD730DC00140C30 /* UrlSessionDelegate.swift */; };
+		93E59E292EBD0BAC00888744 /* ouinet.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E59E282EBD0BAC00888744 /* ouinet.xcframework */; };
+		93E59E2A2EBD0D4400888744 /* ouinet.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93E59E282EBD0BAC00888744 /* ouinet.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -36,7 +35,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				938F399A2AE9A1FB0076CC25 /* ouinet-ios.framework in Embed Frameworks */,
+				93E59E2A2EBD0D4400888744 /* ouinet.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -50,12 +49,9 @@
 		9307DA582AB8DBA0009525A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9307DA5B2AB8DBA0009525A5 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9343669E2B2A58E3000A5C94 /* SFSafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFSafariView.swift; sourceTree = "<group>"; };
-		938C60392AB8E2EB004FE3D5 /* Ouinet */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Ouinet; sourceTree = "<group>"; };
-		938C603A2AB8E2EB004FE3D5 /* Ouinet-BridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Ouinet-BridgingHeader.h"; sourceTree = "<group>"; };
 		938C603C2AB8E33B004FE3D5 /* cacert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cacert.pem; sourceTree = "<group>"; };
 		938C60422AB8E565004FE3D5 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		938C60442AB8F516004FE3D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		938F39982AE9A1FB0076CC25 /* ouinet-ios.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = "ouinet-ios.framework"; sourceTree = "<group>"; };
 		9391B37D2AD99CC80066476E /* WebKitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitView.swift; sourceTree = "<group>"; };
 		9391B37F2AD99EC80066476E /* OuinetStatusStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OuinetStatusStore.swift; sourceTree = "<group>"; };
 		9391B3812AD99EE40066476E /* OuinetStatus.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = OuinetStatus.swift; sourceTree = "<group>"; };
@@ -66,6 +62,7 @@
 		93D787632AD7220700140C30 /* WebKitUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebKitUIView.swift; sourceTree = "<group>"; };
 		93D787652AD728C200140C30 /* UrlSessionUIVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlSessionUIVIew.swift; sourceTree = "<group>"; };
 		93D787672AD730DC00140C30 /* UrlSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlSessionDelegate.swift; sourceTree = "<group>"; };
+		93E59E282EBD0BAC00888744 /* ouinet.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = ouinet.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				938F39992AE9A1FB0076CC25 /* ouinet-ios.framework in Frameworks */,
+				93E59E292EBD0BAC00888744 /* ouinet.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -83,7 +80,7 @@
 		82433DA91D5035744C116F08 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				938F39982AE9A1FB0076CC25 /* ouinet-ios.framework */,
+				93E59E282EBD0BAC00888744 /* ouinet.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -110,8 +107,6 @@
 			isa = PBXGroup;
 			children = (
 				938C60442AB8F516004FE3D5 /* Info.plist */,
-				938C60392AB8E2EB004FE3D5 /* Ouinet */,
-				938C603A2AB8E2EB004FE3D5 /* Ouinet-BridgingHeader.h */,
 				9307DA542AB8DB9F009525A5 /* OuinetExampleApp.swift */,
 				9307DA562AB8DB9F009525A5 /* ContentView.swift */,
 				9307DA582AB8DBA0009525A5 /* Assets.xcassets */,
@@ -203,7 +198,6 @@
 				938C603D2AB8E33B004FE3D5 /* cacert.pem in Resources */,
 				9307DA5C2AB8DBA0009525A5 /* Preview Assets.xcassets in Resources */,
 				9307DA592AB8DBA0009525A5 /* Assets.xcassets in Resources */,
-				938C603B2AB8E2EB004FE3D5 /* Ouinet in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,7 +374,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "${PROJECT_DIR}/OuinetExample/Ouinet-BridgingHeader.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -419,7 +412,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "${PROJECT_DIR}/OuinetExample/Ouinet-BridgingHeader.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

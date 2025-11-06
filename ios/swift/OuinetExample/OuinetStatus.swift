@@ -4,8 +4,9 @@
 //
 //  Created by grant on 10/13/23.
 //
+import Ouinet
 
-extension Client {
+extension OuinetClient {
     func getStateAsString() -> String {
         switch self.getState() {
         case 0:

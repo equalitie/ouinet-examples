@@ -4,13 +4,14 @@
 //
 //  Created by grant on 10/13/23.
 //
+import Ouinet
 
 @MainActor class OuinetStatusStore: ObservableObject {
      @Published var ouinetStatus = OuinetStatus(state: "Client State: ?")
      
-     var client : Client? = nil
+     var client : OuinetClient? = nil
 
-     init(client: Client) {
+     init(client: OuinetClient) {
          self.client = client
      }
 

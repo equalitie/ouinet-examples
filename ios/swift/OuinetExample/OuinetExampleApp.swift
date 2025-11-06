@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Ouinet
 
 extension FileManager {
     func copyFileToDirectory(fileName name: String,
@@ -30,10 +31,10 @@ extension FileManager {
 
 @main
 struct OuinetExampleApp: App {
-    var client : Client
+    var client : OuinetClient
     init() {
         UIApplication.shared.isIdleTimerDisabled = true
-        let config = Config.init()
+        let config = OuinetConfig.init()
         do {
             try FileManager.default.copyFileToDirectory(fileName: "cacert.pem", toPath: config!.getOuinetDirectory())
         }catch{
@@ -47,7 +48,7 @@ struct OuinetExampleApp: App {
             .setListenOnTcp("127.0.0.1:9077")
             .setFrontEndEp("127.0.0.1:9078")
             .setDisableOriginAccess(true)
-        client = Client.init(config: config)
+        client = OuinetClient.init(config: config)
         client.start()
     }
     

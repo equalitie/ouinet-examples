@@ -98,5 +98,6 @@ xcschememanagement.plist
 *.xcbkptlist
 .LSOverride
 
-# ouinet-ios.framework headers
-ios/swift/OuinetExample/OuinetExample/Ouinet
+# Ouinet
+*.xcframework
+

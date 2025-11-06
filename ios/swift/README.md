@@ -2,32 +2,23 @@
 
 ## Prepare your app for using Ouinet
 
-Build `ouinet-ios.framework` following instructions here, https://gitlab.com/equalitie/ouinet/-/issues/100
+Build `ouinet.xcframework` using https://gitlab.com/equalitie/ouinet/-/blob/main/scripts/build-darwin.sh
 
-After building, copy `ouinet-ios.framework` into the root of the Xcode workspace and copy the Ouinet Objective-C headers from `<ouinet-src-path>/ios/ouinet/src/ouinet/*.h` into a `OuinetExample/Ouinet` directory in the Xcode workspace.
+After building, copy `ouinet.xcframework` into the root of the Xcode workspace. 
 
-Add the `ouinet-ios.framework` to your Xcode project's "Frameworks, Libraries, and Embedded Content" via the project settings page.
+Add the `ouinet.xcframework` to your Xcode project's "Frameworks, Libraries, and Embedded Content" via the project settings page.
 
-Create a `OuinetBridgingHeader.h` in the project,
-
-```objective-c
-#import <Foundation/Foundation.h>
-#import "Ouinet/Config.h"
-#import "Ouinet/Client.h"
-```
-and add the path to this file to your project's build settings as the `Objective-C Bridging Header`.  
-This will allow Ouinet's Objective-C wrapper methods to be called from Swift code.
-
-In the main routine of your app, initialize a `Client` and a `Config` object. Then start the ouinet client:
+In the main routine of your app, import the Ouinet package, initialize a `OuinetClient` and a `OuinetConfig` object. Then start the ouinet client:
 ```swift
+import Ouinet
 
 @main
 struct OuinetExampleApp: App {
-    var client : Client
+    var client : OuinetClient
     init() {
-        let config = Config.init()
+        let config = OuinetConfig.init()
         config?.setCacheType("bep5-http")
-        client = Client.init(config: config)
+        client = OuinetClient.init(config: config)
         client.start()
     }
     

@@ -1,0 +1,672 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9353CD192B6D67EE0049BAA8 /* UrlSessionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9353CD182B6D67EE0049BAA8 /* UrlSessionModel.swift */; };
+		9353CD1B2B6D68140049BAA8 /* UrlSessionUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9353CD1A2B6D68140049BAA8 /* UrlSessionUIView.swift */; };
+		9353CD1D2B6D68260049BAA8 /* UrlSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9353CD1C2B6D68260049BAA8 /* UrlSessionDelegate.swift */; };
+		9365BB0E2B5089DF00B38848 /* OuinetClientApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9365BB0D2B5089DF00B38848 /* OuinetClientApp.swift */; };
+		9365BB102B5089DF00B38848 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9365BB0F2B5089DF00B38848 /* ContentView.swift */; };
+		9365BB122B5089DF00B38848 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9365BB112B5089DF00B38848 /* Assets.xcassets */; };
+		9365BB152B5089DF00B38848 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9365BB142B5089DF00B38848 /* Preview Assets.xcassets */; };
+		9365BB252B508AE300B38848 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9365BB242B508AE300B38848 /* NetworkExtension.framework */; };
+		9365BB282B508AE300B38848 /* PacketTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9365BB272B508AE300B38848 /* PacketTunnelProvider.swift */; };
+		9365BB2D2B508AE300B38848 /* OuinetTunnel.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 9365BB222B508AE300B38848 /* OuinetTunnel.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9365BB362B508EA000B38848 /* SFSafariView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9365BB352B508EA000B38848 /* SFSafariView.swift */; };
+		93684CF42B588247006E3634 /* VPNManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9365BB1B2B5089FD00B38848 /* VPNManager.swift */; };
+		9375A38B2B6ABBFA00FA634E /* WebKitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9375A3872B6ABBFA00FA634E /* WebKitView.swift */; };
+		9375A38C2B6ABBFA00FA634E /* WebKitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9375A3882B6ABBFA00FA634E /* WebKitViewModel.swift */; };
+		9375A38D2B6ABBFA00FA634E /* WebKitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9375A3892B6ABBFA00FA634E /* WebKitViewController.swift */; };
+		9375A38E2B6ABBFA00FA634E /* WebKitUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9375A38A2B6ABBFA00FA634E /* WebKitUIView.swift */; };
+		9379AE8F2B726C20003FB349 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9379AE8E2B726C20003FB349 /* Localizable.strings */; };
+		9379AE972B726D3A003FB349 /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = 93CFFABB2B683B9200C6FBFA /* cacert.pem */; };
+		9390FB3C2B7EB06B0065DF7A /* AsyncClientUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9390FB3B2B7EB06B0065DF7A /* AsyncClientUIView.swift */; };
+		9390FB3E2B7EB1290065DF7A /* AsyncClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9390FB3D2B7EB1290065DF7A /* AsyncClient.swift */; };
+		9390FB402B7ECE7E0065DF7A /* UrlStreamUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9390FB3F2B7ECE7E0065DF7A /* UrlStreamUIView.swift */; };
+		9390FB422B7ECEB60065DF7A /* UrlStreamDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9390FB412B7ECEB60065DF7A /* UrlStreamDelegate.swift */; };
+		939A20B22B76700000E760C6 /* AsyncHTTPClient in Frameworks */ = {isa = PBXBuildFile; productRef = 939A20B12B76700000E760C6 /* AsyncHTTPClient */; };
+		93CFFABA2B683B3E00C6FBFA /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 93CFFAB92B683B3E00C6FBFA /* Localizable.strings */; };
+		93CFFABC2B683B9200C6FBFA /* cacert.pem in Resources */ = {isa = PBXBuildFile; fileRef = 93CFFABB2B683B9200C6FBFA /* cacert.pem */; };
+		93F05F732EBD11C3000D058B /* ouinet.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93F05F722EBD11C3000D058B /* ouinet.xcframework */; };
+		93F05F742EBD11C9000D058B /* ouinet.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 93F05F722EBD11C3000D058B /* ouinet.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9365BB2B2B508AE300B38848 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9365BB022B5089DF00B38848 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9365BB212B508AE300B38848;
+			remoteInfo = OuinetTunnel;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9365BB312B508AE300B38848 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				9365BB2D2B508AE300B38848 /* OuinetTunnel.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9379AE952B726CB7003FB349 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				93F05F742EBD11C9000D058B /* ouinet.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93833CEF2B73C6ED00BBD589 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		93CFFAB52B6839B500C6FBFA /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		9353CD182B6D67EE0049BAA8 /* UrlSessionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlSessionModel.swift; sourceTree = "<group>"; };
+		9353CD1A2B6D68140049BAA8 /* UrlSessionUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlSessionUIView.swift; sourceTree = "<group>"; };
+		9353CD1C2B6D68260049BAA8 /* UrlSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlSessionDelegate.swift; sourceTree = "<group>"; };
+		9365BB0A2B5089DF00B38848 /* OuinetClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OuinetClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9365BB0D2B5089DF00B38848 /* OuinetClientApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OuinetClientApp.swift; sourceTree = "<group>"; };
+		9365BB0F2B5089DF00B38848 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9365BB112B5089DF00B38848 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9365BB142B5089DF00B38848 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		9365BB1B2B5089FD00B38848 /* VPNManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VPNManager.swift; sourceTree = "<group>"; };
+		9365BB1D2B508A3200B38848 /* OuinetClient.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OuinetClient.entitlements; sourceTree = "<group>"; };
+		9365BB222B508AE300B38848 /* OuinetTunnel.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OuinetTunnel.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		9365BB242B508AE300B38848 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
+		9365BB272B508AE300B38848 /* PacketTunnelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketTunnelProvider.swift; sourceTree = "<group>"; };
+		9365BB292B508AE300B38848 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9365BB2A2B508AE300B38848 /* OuinetTunnel.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OuinetTunnel.entitlements; sourceTree = "<group>"; };
+		9365BB352B508EA000B38848 /* SFSafariView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SFSafariView.swift; sourceTree = "<group>"; };
+		9375A3872B6ABBFA00FA634E /* WebKitView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebKitView.swift; sourceTree = "<group>"; };
+		9375A3882B6ABBFA00FA634E /* WebKitViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebKitViewModel.swift; sourceTree = "<group>"; };
+		9375A3892B6ABBFA00FA634E /* WebKitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebKitViewController.swift; sourceTree = "<group>"; };
+		9375A38A2B6ABBFA00FA634E /* WebKitUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebKitUIView.swift; sourceTree = "<group>"; };
+		9379AE8E2B726C20003FB349 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		9390FB3B2B7EB06B0065DF7A /* AsyncClientUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncClientUIView.swift; sourceTree = "<group>"; };
+		9390FB3D2B7EB1290065DF7A /* AsyncClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncClient.swift; sourceTree = "<group>"; };
+		9390FB3F2B7ECE7E0065DF7A /* UrlStreamUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlStreamUIView.swift; sourceTree = "<group>"; };
+		9390FB412B7ECEB60065DF7A /* UrlStreamDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlStreamDelegate.swift; sourceTree = "<group>"; };
+		93CFFAB92B683B3E00C6FBFA /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		93CFFABB2B683B9200C6FBFA /* cacert.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cacert.pem; sourceTree = "<group>"; };
+		93F05F722EBD11C3000D058B /* ouinet.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = ouinet.xcframework; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9365BB072B5089DF00B38848 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93F05F732EBD11C3000D058B /* ouinet.xcframework in Frameworks */,
+				939A20B22B76700000E760C6 /* AsyncHTTPClient in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9365BB1F2B508AE300B38848 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9365BB252B508AE300B38848 /* NetworkExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9365BB012B5089DF00B38848 = {
+			isa = PBXGroup;
+			children = (
+				93CFFABB2B683B9200C6FBFA /* cacert.pem */,
+				9365BB0C2B5089DF00B38848 /* OuinetClient */,
+				9365BB262B508AE300B38848 /* OuinetTunnel */,
+				9365BB232B508AE300B38848 /* Frameworks */,
+				9365BB0B2B5089DF00B38848 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9365BB0B2B5089DF00B38848 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9365BB0A2B5089DF00B38848 /* OuinetClient.app */,
+				9365BB222B508AE300B38848 /* OuinetTunnel.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9365BB0C2B5089DF00B38848 /* OuinetClient */ = {
+			isa = PBXGroup;
+			children = (
+				9365BB1D2B508A3200B38848 /* OuinetClient.entitlements */,
+				9365BB0D2B5089DF00B38848 /* OuinetClientApp.swift */,
+				9365BB0F2B5089DF00B38848 /* ContentView.swift */,
+				9365BB352B508EA000B38848 /* SFSafariView.swift */,
+				9375A3882B6ABBFA00FA634E /* WebKitViewModel.swift */,
+				9375A38A2B6ABBFA00FA634E /* WebKitUIView.swift */,
+				9375A3892B6ABBFA00FA634E /* WebKitViewController.swift */,
+				9375A3872B6ABBFA00FA634E /* WebKitView.swift */,
+				9353CD182B6D67EE0049BAA8 /* UrlSessionModel.swift */,
+				9353CD1A2B6D68140049BAA8 /* UrlSessionUIView.swift */,
+				9353CD1C2B6D68260049BAA8 /* UrlSessionDelegate.swift */,
+				9390FB3B2B7EB06B0065DF7A /* AsyncClientUIView.swift */,
+				9390FB3D2B7EB1290065DF7A /* AsyncClient.swift */,
+				9365BB112B5089DF00B38848 /* Assets.xcassets */,
+				9379AE8E2B726C20003FB349 /* Localizable.strings */,
+				9365BB132B5089DF00B38848 /* Preview Content */,
+				9365BB1B2B5089FD00B38848 /* VPNManager.swift */,
+				9390FB3F2B7ECE7E0065DF7A /* UrlStreamUIView.swift */,
+				9390FB412B7ECEB60065DF7A /* UrlStreamDelegate.swift */,
+			);
+			path = OuinetClient;
+			sourceTree = "<group>";
+		};
+		9365BB132B5089DF00B38848 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				9365BB142B5089DF00B38848 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		9365BB232B508AE300B38848 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				93F05F722EBD11C3000D058B /* ouinet.xcframework */,
+				9365BB242B508AE300B38848 /* NetworkExtension.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9365BB262B508AE300B38848 /* OuinetTunnel */ = {
+			isa = PBXGroup;
+			children = (
+				9365BB272B508AE300B38848 /* PacketTunnelProvider.swift */,
+				9365BB292B508AE300B38848 /* Info.plist */,
+				9365BB2A2B508AE300B38848 /* OuinetTunnel.entitlements */,
+				93CFFAB92B683B3E00C6FBFA /* Localizable.strings */,
+			);
+			path = OuinetTunnel;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9365BB092B5089DF00B38848 /* OuinetClient */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9365BB182B5089DF00B38848 /* Build configuration list for PBXNativeTarget "OuinetClient" */;
+			buildPhases = (
+				9365BB062B5089DF00B38848 /* Sources */,
+				9365BB072B5089DF00B38848 /* Frameworks */,
+				9365BB082B5089DF00B38848 /* Resources */,
+				9365BB312B508AE300B38848 /* Embed Foundation Extensions */,
+				9379AE952B726CB7003FB349 /* Embed Frameworks */,
+				93833CEF2B73C6ED00BBD589 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9365BB2C2B508AE300B38848 /* PBXTargetDependency */,
+			);
+			name = OuinetClient;
+			packageProductDependencies = (
+				939A20B12B76700000E760C6 /* AsyncHTTPClient */,
+			);
+			productName = OuinetClient;
+			productReference = 9365BB0A2B5089DF00B38848 /* OuinetClient.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9365BB212B508AE300B38848 /* OuinetTunnel */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9365BB2E2B508AE300B38848 /* Build configuration list for PBXNativeTarget "OuinetTunnel" */;
+			buildPhases = (
+				9365BB1E2B508AE300B38848 /* Sources */,
+				9365BB1F2B508AE300B38848 /* Frameworks */,
+				9365BB202B508AE300B38848 /* Resources */,
+				93CFFAB52B6839B500C6FBFA /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OuinetTunnel;
+			packageProductDependencies = (
+			);
+			productName = OuinetTunnel;
+			productReference = 9365BB222B508AE300B38848 /* OuinetTunnel.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9365BB022B5089DF00B38848 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					9365BB092B5089DF00B38848 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					9365BB212B508AE300B38848 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = 9365BB052B5089DF00B38848 /* Build configuration list for PBXProject "OuinetClient" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9365BB012B5089DF00B38848;
+			packageReferences = (
+				939A20B02B76700000E760C6 /* XCRemoteSwiftPackageReference "async-http-client" */,
+			);
+			productRefGroup = 9365BB0B2B5089DF00B38848 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9365BB092B5089DF00B38848 /* OuinetClient */,
+				9365BB212B508AE300B38848 /* OuinetTunnel */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9365BB082B5089DF00B38848 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9365BB152B5089DF00B38848 /* Preview Assets.xcassets in Resources */,
+				9379AE8F2B726C20003FB349 /* Localizable.strings in Resources */,
+				9365BB122B5089DF00B38848 /* Assets.xcassets in Resources */,
+				9379AE972B726D3A003FB349 /* cacert.pem in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9365BB202B508AE300B38848 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93CFFABC2B683B9200C6FBFA /* cacert.pem in Resources */,
+				93CFFABA2B683B3E00C6FBFA /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9365BB062B5089DF00B38848 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9390FB3C2B7EB06B0065DF7A /* AsyncClientUIView.swift in Sources */,
+				9390FB402B7ECE7E0065DF7A /* UrlStreamUIView.swift in Sources */,
+				9365BB102B5089DF00B38848 /* ContentView.swift in Sources */,
+				9390FB422B7ECEB60065DF7A /* UrlStreamDelegate.swift in Sources */,
+				9390FB3E2B7EB1290065DF7A /* AsyncClient.swift in Sources */,
+				9375A38B2B6ABBFA00FA634E /* WebKitView.swift in Sources */,
+				9353CD1D2B6D68260049BAA8 /* UrlSessionDelegate.swift in Sources */,
+				9375A38C2B6ABBFA00FA634E /* WebKitViewModel.swift in Sources */,
+				9375A38D2B6ABBFA00FA634E /* WebKitViewController.swift in Sources */,
+				9375A38E2B6ABBFA00FA634E /* WebKitUIView.swift in Sources */,
+				9353CD1B2B6D68140049BAA8 /* UrlSessionUIView.swift in Sources */,
+				9365BB0E2B5089DF00B38848 /* OuinetClientApp.swift in Sources */,
+				93684CF42B588247006E3634 /* VPNManager.swift in Sources */,
+				9365BB362B508EA000B38848 /* SFSafariView.swift in Sources */,
+				9353CD192B6D67EE0049BAA8 /* UrlSessionModel.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9365BB1E2B508AE300B38848 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9365BB282B508AE300B38848 /* PacketTunnelProvider.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9365BB2C2B508AE300B38848 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9365BB212B508AE300B38848 /* OuinetTunnel */;
+			targetProxy = 9365BB2B2B508AE300B38848 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		9365BB162B5089DF00B38848 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		9365BB172B5089DF00B38848 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9365BB192B5089DF00B38848 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OuinetClient/OuinetClient.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"OuinetClient/Preview Content\"";
+				DEVELOPMENT_TEAM = 5SR9R72Z83;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.equalitie.OuinetClient;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9365BB1A2B5089DF00B38848 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OuinetClient/OuinetClient.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"OuinetClient/Preview Content\"";
+				DEVELOPMENT_TEAM = 5SR9R72Z83;
+				ENABLE_PREVIEWS = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.equalitie.OuinetClient;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		9365BB2F2B508AE300B38848 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = OuinetTunnel/OuinetTunnel.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5SR9R72Z83;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OuinetTunnel/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OuinetTunnel;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.equalitie.OuinetClient.OuinetTunnel;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9365BB302B508AE300B38848 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = OuinetTunnel/OuinetTunnel.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 5SR9R72Z83;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OuinetTunnel/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = OuinetTunnel;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = org.equalitie.OuinetClient.OuinetTunnel;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9365BB052B5089DF00B38848 /* Build configuration list for PBXProject "OuinetClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9365BB162B5089DF00B38848 /* Debug */,
+				9365BB172B5089DF00B38848 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9365BB182B5089DF00B38848 /* Build configuration list for PBXNativeTarget "OuinetClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9365BB192B5089DF00B38848 /* Debug */,
+				9365BB1A2B5089DF00B38848 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9365BB2E2B508AE300B38848 /* Build configuration list for PBXNativeTarget "OuinetTunnel" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9365BB2F2B508AE300B38848 /* Debug */,
+				9365BB302B508AE300B38848 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		939A20B02B76700000E760C6 /* XCRemoteSwiftPackageReference "async-http-client" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/swift-server/async-http-client";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.20.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		939A20B12B76700000E760C6 /* AsyncHTTPClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 939A20B02B76700000E760C6 /* XCRemoteSwiftPackageReference "async-http-client" */;
+			productName = AsyncHTTPClient;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 9365BB022B5089DF00B38848 /* Project object */;
+}

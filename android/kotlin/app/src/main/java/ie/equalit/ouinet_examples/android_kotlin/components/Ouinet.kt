@@ -2,7 +2,6 @@ package ie.equalit.ouinet_examples.android_kotlin.components
 
 import android.content.Context
 import ie.equalit.ouinet.Config
-import ie.equalit.ouinet.NotificationConfig
 import ie.equalit.ouinet.OuinetBackground
 import ie.equalit.ouinet_examples.android_kotlin.BuildConfig
 import ie.equalit.ouinet_examples.android_kotlin.R
@@ -27,42 +26,10 @@ class Ouinet (
             .build()
     }
 
-    private val notificationConfig by lazy {
-        NotificationConfig.Builder(context)
-            .setHomeActivity("ie.equalit.ouinet_examples.android_kotlin.MainActivity")
-            .setNotificationIcons(
-                statusIcon = R.drawable.ic_launcher_foreground,
-                //homeIcon = R.drawable.ic_globe_pm,
-                //clearIcon = R.drawable.ic_cancel_pm
-            )
-            .setChannelName(context.resources.getString(R.string.app_notification_channel_name))
-            .setNotificationText (
-                title = context.resources.getString(R.string.app_notification_title),
-                description = context.resources.getString(R.string.app_notification_description),
-                homeText = context.resources.getString(R.string.app_notification_home_description),
-                clearText = context.resources.getString(R.string.app_notification_clear_description),
-                confirmText = context.resources.getString(R.string.app_notification_clear_do_description),
-            )
-            .build()
-    }
-
-    private lateinit var onNotificationTapped : () -> Unit
-    fun setOnNotificationTapped (listener : () -> Unit) {
-        onNotificationTapped = listener
-    }
-
-    private lateinit var onConfirmTapped : () -> Unit
-    fun setOnConfirmTapped (listener : () -> Unit) {
-        onConfirmTapped = listener
-    }
-
     lateinit var background : OuinetBackground
     fun setBackground (ctx: Context) {
         background = OuinetBackground.Builder(ctx)
             .setOuinetConfig(config)
-            .setNotificationConfig(notificationConfig)
-            .setOnNotifiactionTappedListener { onNotificationTapped.invoke() }
-            .setOnConfirmTappedListener{ onConfirmTapped.invoke() }
             .build()
     }
 

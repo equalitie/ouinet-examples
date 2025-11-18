@@ -81,12 +81,6 @@ class MainActivity : AppCompatActivity() {
         }
          */
 
-        ouinet.setOnNotificationTapped {
-            beginShutdown(false)
-        }
-        ouinet.setOnConfirmTapped {
-            beginShutdown(true)
-        }
         ouinet.setBackground(this)
         ouinetDir = ouinet.config.ouinetDirectory
         Executors.newFixedThreadPool(1).execute(Runnable { this.updateOuinetState() })
@@ -149,7 +143,7 @@ class MainActivity : AppCompatActivity() {
             runOnUiThread {
                 ouinetState.text = "State: $state"
 
-                if (state == "Started") {
+                if (state == "Degraded" || state == "Started") {
                     buttonGet.isVisible = true
                     buttonStart.isVisible = false
                     ouinetEndpoints.isVisible = true

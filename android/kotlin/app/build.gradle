@@ -7,12 +7,12 @@ Properties localProperties = new Properties()
 localProperties.load(rootProject.file('local.properties').newDataInputStream())
 
 android {
-    compileSdk 33
+    compileSdk 36
     buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
         applicationId "ie.equalit.ouinet_examples.android_kotlin"
         minSdk 21
-        targetSdk 33
+        targetSdk 36
         versionCode 1
         versionName "1.0"
 
@@ -43,15 +43,15 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'ie.equalit.ouinet:ouinet-omni:0.24.0'
+    implementation 'androidx.core:core-ktx:1.17.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'com.google.android.material:material:1.13.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    implementation 'ie.equalit.ouinet:ouinet-omni:1.4.2'
     //implementation(name:'ouinet-debug', ext:'aar')
     implementation 'com.getkeepsafe.relinker:relinker:1.4.4'
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
-    implementation 'androidx.test:rules:1.5.0'
+    implementation 'androidx.test:rules:1.7.0'
 
     testImplementation 'junit:junit:4.+'
     //noinspection GradleDependency

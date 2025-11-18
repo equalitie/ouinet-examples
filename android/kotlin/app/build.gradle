@@ -45,8 +45,13 @@ dependencies {
     implementation libs.androidx.appcompat
     implementation libs.google.material
     implementation libs.androidx.constraintlayout
-    implementation libs.ouinet.omni
-    //implementation(name:'ouinet-debug', ext:'aar')
+    if (localProperties['OUINET_LOCAL_LIB']) {
+        project.logger.lifecycle('Substituting local AAR for Ouinet: ' + localProperties['OUINET_LOCAL_LIB'])
+        implementation(files(localProperties['OUINET_LOCAL_LIB']))
+    }
+    else {
+        implementation libs.ouinet.omni
+    }
     implementation libs.relinker
     implementation libs.okhttp
     implementation libs.tools.testrules

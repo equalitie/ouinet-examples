@@ -18,7 +18,7 @@ junit = "4.13.2"
 
 # Ouinet
 kotlinVersion = "2.1.21"
-ouinet_version = "1.4.2"
+ouinet_version = "1.6.3"
 relinker_version = "1.4.4"
 
 # Third Party

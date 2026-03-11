@@ -10,6 +10,7 @@ class Ouinet (
     private val context : Context
 ) {
 
+    val dnsProtocols = setOf("https", "plain")
     val config: Config by lazy {
         Config.ConfigBuilder(context)
             .setCacheHttpPubKey(BuildConfig.CACHE_PUB_KEY)
@@ -23,6 +24,7 @@ class Ouinet (
             //.setBtBootstrapExtras(getBtBootstrapExtras())
             .setListenOnTcp(context.resources.getString(R.string.loopback_ip) + ":" + BuildConfig.PROXY_PORT)
             .setFrontEndEp(context.resources.getString(R.string.loopback_ip) + ":" + BuildConfig.FRONTEND_PORT)
+            .setDnsProtocols(dnsProtocols)
             .build()
     }
 

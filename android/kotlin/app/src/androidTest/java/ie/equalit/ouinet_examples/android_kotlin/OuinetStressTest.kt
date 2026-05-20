@@ -8,6 +8,7 @@ import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,9 +26,14 @@ class OuinetStressTest {
     @get:Rule
     var activityScenarioRule = activityScenarioRule<MainActivity>()
 
+    @Before
+    fun ouinetStart() {
+        Thread.sleep(5000)
+        onView(withId(R.id.start)).perform(click())
+        Thread.sleep(15000)
+    }
+
     private fun checkOuinetStarted() {
-        /* Wait 10s for ouinet to fully start */
-        Thread.sleep(10000)
         onView(withId(R.id.status)).check(matches(withText("State: Started")))
     }
 

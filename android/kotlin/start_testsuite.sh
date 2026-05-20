@@ -24,5 +24,5 @@ fi
 
 curl -u "${BROWSERSTACK_USERNAME}:${BROWSERSTACK_ACCESS_KEY}" \
 -X POST "https://api-cloud.browserstack.com/app-automate/espresso/v2/build" \
--d '{"class": ["ie.equalit.ouinet_examples.android_kotlin.OuinetStartTest"], "clearPackageData": "true", "deviceLogs": "true", "devices": ["Samsung Galaxy Note 20-10.0"], "app": "ouinet-debug-latest", "testSuite": "ouinet-debug-androidTest-latest"}' \
+-d '{"class": ["ie.equalit.ouinet_examples.android_kotlin.OuinetStressTest"], "clearPackageData": "true", "deviceLogs": "true", "devices": ["Samsung Galaxy S24-14.0"], "app": "ouinet-debug-latest", "testSuite": "ouinet-debug-androidTest-latest"}' \
 -H "Content-Type: application/json"

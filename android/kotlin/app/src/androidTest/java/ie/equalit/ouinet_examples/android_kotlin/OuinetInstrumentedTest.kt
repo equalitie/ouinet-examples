@@ -26,12 +26,6 @@ class OuinetInstrumentedTest {
     private fun ouinetBackground() : OuinetBackground {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         val ouinet = Ouinet(appContext)
-        ouinet.setOnNotificationTapped {
-            ouinet.background.shutdown(false)
-        }
-        ouinet.setOnConfirmTapped {
-            ouinet.background.shutdown(true)
-        }
         ouinet.setBackground(appContext)
         return ouinet.background
     }

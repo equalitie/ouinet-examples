@@ -1,0 +1,40 @@
+dns:
+  # We get censored DNS responses when we send queries to an IP in China.
+  - udp: { address: china.cn }
+  # We get censored DNS responses when we send queries to a resolver in Iran.
+  - udp: { address: ns1.tic.ir }
+  - tcp: { address: ns1.tic.ir }
+  # We get censored DNS responses when we send queries to an IP in Turkmenistan.
+  - udp: { address: tmcell.tm }
+  # We get censored DNS responses when we send queries to a resolver in Russia.
+  - udp: { address: dns1.transtelecom.net. }
+  # Testing captive portal.
+  - tls:
+      name: captive-portal.badssl.com
+      address: captive-portal.badssl.com:443
+  # Testing forged TLS certificate.
+  - https: { name: mitm-software.badssl.com }
+  - system: {}
+
+tls:
+  - ""
+  - split:1
+  - split:2
+  - split:5
+  - tlsfrag:1
+
+fallback:
+  # Nonexistent Outline Server
+  - ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTprSzdEdHQ0MkJLOE9hRjBKYjdpWGFK@1.2.3.4:9999/?outline=1
+  # Nonexistant Psiphon Config JSON
+  - psiphon: {
+    "PropagationChannelId":"ID1",
+    "SponsorId":"ID2",
+    "DisableLocalSocksProxy" : true,
+    "DisableLocalHTTPProxy" : true,
+    "EstablishTunnelTimeoutSeconds": 1,
+    # URL points to google.com
+    "RemoteServerListURLs" : [{"URL": "aHR0cHM6Ly9nb29nbGUuY29t", "OnlyAfterAttempts": 0, "SkipVerify": false}],
+  }
+  # Nonexistant local socks5 proxy
+  - socks5://192.168.1.10:1080

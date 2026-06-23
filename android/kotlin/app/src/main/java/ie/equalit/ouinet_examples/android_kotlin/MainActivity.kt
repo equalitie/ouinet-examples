@@ -1,23 +1,33 @@
 package ie.equalit.ouinet_examples.android_kotlin
 
+import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Process
+import android.net.VpnService
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.view.isVisible
 import ie.equalit.ouinet_examples.android_kotlin.components.Ouinet
 import ie.equalit.ouinet_examples.android_kotlin.components.PermissionHandler
 import ie.equalit.ouinet_examples.android_kotlin.components.PermissionHandler.Companion.PERMISSION_CODE_IGNORE_BATTERY_OPTIMIZATIONS
-import okhttp3.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import mobileproxy.Mobileproxy
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import java.io.BufferedReader
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -28,21 +38,32 @@ import java.net.InetSocketAddress
 import java.net.Proxy
 import java.net.URI
 import java.net.URISyntaxException
-import java.security.*
+import java.security.KeyManagementException
+import java.security.KeyStore
+import java.security.KeyStoreException
+import java.security.NoSuchAlgorithmException
+import java.security.SecureRandom
 import java.security.cert.Certificate
 import java.security.cert.CertificateException
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.util.concurrent.Executors
-import javax.net.ssl.*
+import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.TrustManager
+import javax.net.ssl.TrustManagerFactory
+import javax.net.ssl.X509TrustManager
 import kotlin.math.floor
 import kotlin.math.ln
 import kotlin.math.pow
 import kotlin.system.exitProcess
+import mobileproxy.Proxy as MProxy
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity :  ComponentActivity() {
     private val ouinet by lazy { Ouinet(this) }
+    lateinit var proxy: MProxy
+    lateinit var sockAddr: InetSocketAddress
     lateinit var ouinetDir: String
     private val TAG = "OuinetTester"
     private val pHandler = PermissionHandler(this)
@@ -84,12 +105,44 @@ class MainActivity : AppCompatActivity() {
         ouinet.setBackground(this)
         ouinetDir = ouinet.config.ouinetDirectory
         Executors.newFixedThreadPool(1).execute(Runnable { this.updateOuinetState() })
+
+        // Request VPN permission
+        registerForActivityResult(VpnPermissionContract()) { granted ->
+            // TODO: Handle permission granted/rejected
+        }.launch(
+            VpnService.prepare(this)
+        )
+
+        // Setup and start Outline mobile proxy
+        val testDomains = Mobileproxy.newListFromLines("ouinet.work\ni.ytimg.com")
+        val strategiesConfig: String = this.assets.open("config.yaml")
+                .bufferedReader()
+                .use(BufferedReader::readText)
+        val dialer = Mobileproxy.newSmartStreamDialer(testDomains, strategiesConfig, Mobileproxy.newStderrLogWriter())
+
+        proxy = Mobileproxy.runProxy("localhost:0", dialer)
+
+        runBlocking {
+            launch(Dispatchers.Default) {
+                sockAddr = InetSocketAddress(
+                    proxy.host(),
+                    proxy.port()
+                        .toInt()
+                )
+            }
+        }
     }
 
     fun startOuinet(view: View?) {
         val toast = Toast.makeText(this, "Starting Ouinet service", Toast.LENGTH_SHORT)
         ouinet.background.startup()
         toast.show()
+        startVpn()
+    }
+
+    private fun startVpn() {
+        val intent = Intent(this, OuinetVpnService::class.java)
+        startService(intent)
     }
 
     private fun exitOuinetServiceProcess() {
@@ -381,10 +434,12 @@ class MainActivity : AppCompatActivity() {
             )
 
             // Proxy to ouinet service
-            val endpoint = ouinet.background.getProxyEndpoint()
-            val ouinetService = Proxy(Proxy.Type.HTTP,
-                InetSocketAddress(endpoint!!.getAddress(), endpoint!!.getPort()))
-            builder.proxy(ouinetService)
+            //val endpoint = ouinet.background.getProxyEndpoint()
+            //val ouinetService = Proxy(Proxy.Type.HTTP,
+            //    InetSocketAddress(endpoint!!.getAddress(), endpoint!!.getPort()))
+            //builder.proxy(ouinetService)
+            val mobileproxyService = Proxy(Proxy.Type.HTTP, sockAddr)
+            builder.proxy(mobileproxyService)
             return builder.build()
         } catch (e: Exception) {
             throw RuntimeException(e)
@@ -469,5 +524,15 @@ class MainActivity : AppCompatActivity() {
         override fun getAcceptedIssuers(): Array<X509Certificate> {
             return arrayOf(ca as X509Certificate)
         }
+    }
+}
+
+class VpnPermissionContract : ActivityResultContract<Intent, Boolean>() {
+    override fun createIntent(context: Context, input: Intent): Intent {
+        return input
+    }
+
+    override fun parseResult(resultCode: Int, intent: Intent?): Boolean {
+        return resultCode == Activity.RESULT_OK
     }
 }

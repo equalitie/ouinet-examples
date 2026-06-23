@@ -55,6 +55,7 @@ dependencies {
     implementation libs.relinker
     implementation libs.okhttp
     implementation libs.tools.testrules
+    implementation libs.mobileproxylib
 
     testImplementation libs.junit
     androidTestImplementation libs.kotlin.stdlib

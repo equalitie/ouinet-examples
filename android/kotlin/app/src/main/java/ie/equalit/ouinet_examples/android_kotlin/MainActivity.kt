@@ -3,38 +3,17 @@ package ie.equalit.ouinet_examples.android_kotlin
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Process
-import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
+import androidx.compose.material3.MaterialTheme
+import ie.equalit.ouinet_examples.android_kotlin.components.HttpClient
 import ie.equalit.ouinet_examples.android_kotlin.components.Ouinet
 import ie.equalit.ouinet_examples.android_kotlin.components.PermissionHandler
 import ie.equalit.ouinet_examples.android_kotlin.components.PermissionHandler.Companion.PERMISSION_CODE_IGNORE_BATTERY_OPTIMIZATIONS
-import okhttp3.*
-import java.io.BufferedReader
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.IOException
-import java.io.InputStream
-import java.io.Reader
-import java.net.InetSocketAddress
-import java.net.Proxy
-import java.net.URI
-import java.net.URISyntaxException
-import java.security.*
-import java.security.cert.Certificate
-import java.security.cert.CertificateException
-import java.security.cert.CertificateFactory
-import java.security.cert.X509Certificate
-import java.util.concurrent.Executors
-import javax.net.ssl.*
 import kotlin.math.floor
 import kotlin.math.ln
 import kotlin.math.pow
@@ -43,34 +22,12 @@ import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
     private val ouinet by lazy { Ouinet(this) }
-    lateinit var ouinetDir: String
+    private val httpClient  = HttpClient()
     private val TAG = "OuinetTester"
     private val pHandler = PermissionHandler(this)
-    private lateinit var mGroupsView : TextView
-    private lateinit var mCacheView : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        mGroupsView = findViewById<View>(R.id.groups) as TextView
-        mGroupsView.text = String.format(getString(R.string.groups_text), 0)
-
-        mCacheView = findViewById<View>(R.id.cache_size) as TextView
-        mCacheView.text = String.format(getString(R.string.cache_text), 0)
-
-        val restart = findViewById<Button>(R.id.restart)
-        restart.setOnClickListener{
-            ouinet.background.stop {
-                ouinet.background.start()
-            }
-        }
-
-        val clear = findViewById<Button>(R.id.clear)
-        clear.setOnClickListener{ clearCache() }
-
-        val get = findViewById<Button>(R.id.get)
-        get.setOnClickListener{ getURL(get) }
 
         /*
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -82,8 +39,8 @@ class MainActivity : AppCompatActivity() {
          */
 
         ouinet.setBackground(this)
-        ouinetDir = ouinet.config.ouinetDirectory
-        Executors.newFixedThreadPool(1).execute(Runnable { this.updateOuinetState() })
+        val viewModel = OuinetViewModel(ouinet, httpClient)
+        setContent { MaterialTheme { OuinetView(viewModel) } }
     }
 
     fun startOuinet(view: View?) {
@@ -126,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /*
     private fun updateOuinetState() {
         val ouinetState = findViewById<View>(R.id.status) as TextView
         val ouinetEndpoints = findViewById<View>(R.id.endpoints) as TextView
@@ -161,6 +119,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+    */
 
     private fun log2(n: Int): Double {
         return ln(n.toDouble()) / ln(2.0)
@@ -178,6 +137,7 @@ class MainActivity : AppCompatActivity() {
         return String.format("%.2f %s", v, u)
     }
 
+    /*
     fun getGroups() {
         val endpoint = ouinet.background.getFrontendEndpoint()
         val url = "http://" + endpoint!!.toString() + "/groups.txt"
@@ -268,206 +228,5 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-
-    fun clearCache() {
-        val endpoint = ouinet.background.getFrontendEndpoint()
-        val url = "http://" + endpoint!!.toString() + "/?purge_cache=do"
-
-        val client: OkHttpClient = getOuinetHttpClient()
-        val request: Request = Request.Builder()
-            .url(url)
-            .header("X-Ouinet-Group", getDhtGroup(url))
-            .build()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-            }
-
-            @Throws(IOException::class)
-            override fun onResponse(call: Call, response: Response) {
-                response.body.use { body ->
-                    val responseHeaders = response.headers
-                    var i = 0
-                    val size = responseHeaders.size
-                    while (i < size) {
-                        println(responseHeaders.name(i) + ": " + responseHeaders.value(i))
-                        i++
-                    }
-                }
-                getGroups()
-                getStatus()
-            }
-        })
-    }
-
-    fun getURL(view: View?) {
-        val editText = findViewById<View>(R.id.url) as EditText
-        val logViewer = findViewById<View>(R.id.log_viewer) as TextView
-        val url = editText.text.toString()
-        val toast = Toast.makeText(this, "Loading: $url", Toast.LENGTH_SHORT)
-        toast.show()
-
-        val client: OkHttpClient = getOuinetHttpClient()
-        val request: Request = Request.Builder()
-            .url(url)
-            .header("X-Ouinet-Group", getDhtGroup(url))
-            .build()
-
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-                runOnUiThread { logViewer.text = e.toString() }
-            }
-
-            @Throws(IOException::class)
-            override fun onResponse(call: Call, response: Response) {
-                val responseHeaders = response.headers
-                var i = 0
-                val size = responseHeaders.size
-                while (i < size) {
-                    println(responseHeaders.name(i) + ": " + responseHeaders.value(i))
-                    i++
-                }
-                /* Consume the response body in an async thread */
-                val thread = Thread {
-                    try {
-                        if (response.isSuccessful) {
-                            println("Response ready")
-                            val `in`: Reader? = response.body?.charStream()
-                            val reader = BufferedReader(`in`)
-                            var line: String? = reader.readLine()
-                            while (line != null) {
-                                println(line)
-                                line = reader.readLine()
-                            }
-                            reader.close()
-                            `in`?.close()
-                        }
-                    } catch (e: java.lang.Exception) {
-                        e.printStackTrace()
-                    }
-                }
-                thread.start()
-                runOnUiThread {
-                    logViewer.text = responseHeaders.toString()
-                }
-                getGroups()
-                getStatus()
-            }
-        })
-    }
-
-    private fun getDhtGroup(url: String): String {
-        var domain: String = ""
-        try {
-            domain = URI(url).schemeSpecificPart
-            domain = domain.replace("^//".toRegex(), "")
-        } catch (e: URISyntaxException) {
-            e.printStackTrace()
-        }
-        return domain
-    }
-
-    private fun getOuinetHttpClient(): OkHttpClient {
-        return try {
-            val trustManagers: Array<TrustManager> = getOuinetTrustManager()
-
-            val builder = OkHttpClient.Builder()
-            builder.sslSocketFactory(
-                getSSLSocketFactory(trustManagers),
-                (trustManagers[0] as X509TrustManager)
-            )
-
-            // Proxy to ouinet service
-            val endpoint = ouinet.background.getProxyEndpoint()
-            val ouinetService = Proxy(Proxy.Type.HTTP,
-                InetSocketAddress(endpoint!!.getAddress(), endpoint!!.getPort()))
-            builder.proxy(ouinetService)
-            return builder.build()
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
-    }
-
-    @Throws(NoSuchAlgorithmException::class, KeyManagementException::class)
-    private fun getSSLSocketFactory(trustManagers: Array<TrustManager>): SSLSocketFactory {
-        val sslContext = SSLContext.getInstance("TLS")
-        sslContext.init(null, trustManagers, SecureRandom())
-        return sslContext.socketFactory
-    }
-
-    @Throws(
-        NoSuchAlgorithmException::class,
-        KeyStoreException::class,
-        CertificateException::class,
-        IOException::class
-    )
-    private fun getOuinetTrustManager(): Array<TrustManager> {
-        return arrayOf(OuinetTrustManager())
-    }
-
-    inner private class OuinetTrustManager : X509TrustManager {
-        private var trustManager: X509TrustManager? = null
-        private var ca: Certificate? = null
-
-        init {
-            val tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
-            tmf.init(keyStore)
-            for (tm in tmf.trustManagers) {
-                if (tm is X509TrustManager) {
-                    trustManager = tm
-                    break
-                }
-            }
-        }
-
-        @get:Throws(
-            KeyStoreException::class,
-            CertificateException::class,
-            NoSuchAlgorithmException::class,
-            IOException::class
-        )
-        private val keyStore: KeyStore
-            private get() {
-                val keyStore = KeyStore.getInstance(KeyStore.getDefaultType())
-                keyStore.load(null, null)
-                keyStore.setCertificateEntry("ca", certificateAuthority)
-                return keyStore
-            }
-
-        @get:Throws(CertificateException::class)
-        private val certificateAuthority: Certificate?
-            private get() {
-                var caInput: InputStream? = null
-                try {
-                    caInput = FileInputStream(ouinetDir + "/ssl-ca-cert.pem")
-                } catch (e: FileNotFoundException) {
-                    e.printStackTrace()
-                }
-                val cf = CertificateFactory.getInstance("X.509")
-                ca = cf.generateCertificate(caInput)
-                return ca
-            }
-
-        @Throws(CertificateException::class)
-        override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {
-        }
-
-        @Throws(CertificateException::class)
-        override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {
-            for (cert in chain) {
-                Log.d(TAG, "Server Cert Issuer: " + cert.issuerDN.name + " " + cert.subjectDN.name)
-            }
-            for (cert in trustManager!!.acceptedIssuers) {
-                Log.d(TAG, "Client Trusted Issuer: " + cert.issuerDN.name)
-            }
-            trustManager!!.checkServerTrusted(chain, authType)
-        }
-
-        override fun getAcceptedIssuers(): Array<X509Certificate> {
-            return arrayOf(ca as X509Certificate)
-        }
-    }
+    */
 }

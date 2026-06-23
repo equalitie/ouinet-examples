@@ -1,23 +1,26 @@
 [versions]
 
 # AndroidX
+activityCompose = "1.13.0"
 androidx_appcompat = "1.7.1"
 androidx_constraintlayout = "2.2.1"
 androidx_core = "1.17.0"
 
 # Google
-google_material = "1.13.0"
+google_material = "1.14.0"
 
 # Gradle
 #noinspection AndroidGradlePluginVersion
 gradle_android_plugin = "8.9.3"
-gradle_kotlin_plugin = "2.1.21"
+gradle_kotlin_plugin = "2.4.0"
 
 # Kotlin
 junit = "4.13.2"
 
 # Ouinet
-kotlinVersion = "2.1.21"
+kotlinVersion = "2.3.20"
+materialIconsExtended = "1.7.8"
+navigationComposeVersion = "2.9.0"
 ouinet_version = "1.6.4"
 relinker_version = "1.4.4"
 
@@ -28,13 +31,24 @@ okhttp = "4.9.3"
 testing_androidx_core = "1.7.0"
 testing_androidx_espresso = "3.7.0"
 testing_androidx_ext_junit = "1.3.0"
+runtime = "1.11.2"
+material3 = "1.4.0"
+navigationCompose = "2.9.8"
+uiText = "1.11.2"
+uiToolingPreview = "1.11.2"
+uiTooling = "1.11.2"
+
+[plugins]
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "gradle_kotlin_plugin" }
 
 [libraries]
 
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx_appcompat" }
 androidx-corektx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx_core" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx_constraintlayout" }
 
+androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "google_material" }
 
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinVersion" }
@@ -53,3 +67,9 @@ tools-testjunitktx = { group = "androidx.test.ext", name = "junit-ktx", version.
 ouinet-omni = { group = "ie.equalit.ouinet", name = "ouinet-omni", version.ref = "ouinet_version" }
 relinker = { group = "com.getkeepsafe.relinker", name = "relinker", version.ref = "relinker_version" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+androidx-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "runtime" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
+androidx-ui-text = { group = "androidx.compose.ui", name = "ui-text", version.ref = "uiText" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "uiToolingPreview" }
+androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling", version.ref = "uiTooling" }

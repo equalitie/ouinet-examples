@@ -57,6 +57,13 @@ dependencies {
     implementation libs.tools.testrules
 
     testImplementation libs.junit
+    if (localProperties['OUINET_LOCAL_LIB']) {
+        project.logger.lifecycle('Substituting local AAR for Ouinet: ' + localProperties['OUINET_LOCAL_LIB'])
+        testImplementation(files(localProperties['OUINET_LOCAL_LIB']))
+    }
+    else {
+        testImplementation libs.ouinet.omni
+    }
     androidTestImplementation libs.kotlin.stdlib
     androidTestImplementation libs.tools.testcore
     androidTestImplementation libs.tools.testcorektx
@@ -65,4 +72,12 @@ dependencies {
     androidTestImplementation libs.tools.testrunner
     androidTestImplementation libs.espresso.core
     androidTestImplementation libs.tools.testrules
+    if (localProperties['OUINET_LOCAL_LIB']) {
+        project.logger.lifecycle('Substituting local AAR for Ouinet: ' + localProperties['OUINET_LOCAL_LIB'])
+        androidTestImplementation(files(localProperties['OUINET_LOCAL_LIB']))
+    }
+    else {
+        androidTestImplementation libs.ouinet.omni
+    }
+    // TODO: probably there is a nice way to not duplicate dependencies
 }

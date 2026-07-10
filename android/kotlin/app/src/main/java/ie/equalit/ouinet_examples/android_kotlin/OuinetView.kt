@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -57,7 +59,9 @@ fun OuinetStatusScreen(viewModel: OuinetViewModel) {
     ) { padding ->
         Column(
             verticalArrangement = Arrangement.spacedBy(PADDING),
-            modifier = Modifier.padding(padding)
+            modifier = Modifier
+                .padding(padding)
+                .verticalScroll(rememberScrollState())
         ) {
             Log.d("OuinetView", "Created column?")
             CenterAlignedRow {
@@ -115,6 +119,9 @@ fun OuinetStatusScreen(viewModel: OuinetViewModel) {
                 ) {
                     Text(text = "Clear")
                 }
+            }
+            CenterAlignedRow {
+                Text(text = "Response: ${uiState.response}")
             }
         }
     }

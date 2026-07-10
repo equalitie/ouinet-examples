@@ -19,6 +19,7 @@ data class OuinetUiState(
     var currentUrl: String = "https://ouinet.work",
     val groupsCount: Int = 0,
     val cacheSize: Int = 0,
+    val response: String = ""
 )
 
 class OuinetViewModel(private val client: Ouinet?, private val http: HttpClient?) : ViewModel() {
@@ -63,14 +64,18 @@ class OuinetViewModel(private val client: Ouinet?, private val http: HttpClient?
         }
         val toast = Toast.makeText(context, "Requesting URL: ${uiState.value.currentUrl}", Toast.LENGTH_SHORT)
         toast.show()
-        http?.getURL(uiState.value.currentUrl)
+        http?.getURL(uiState.value.currentUrl) { response ->
+            mutUiState.update { it.copy(response = response) }
+        }
     }
 
     fun clearCache(context: Context) {
         val endpoint = client!!.background.getFrontendEndpoint()
         val toast = Toast.makeText(context, "Clearing cache", Toast.LENGTH_SHORT)
         toast.show()
-        http?.getURL("http://${endpoint!!}/?purge_cache=do")
+        http?.getURL("http://${endpoint!!}/?purge_cache=do") { response ->
+            mutUiState.update { it.copy(response = response) }
+        }
     }
 
   private fun updateState() {

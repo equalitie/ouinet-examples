@@ -57,7 +57,7 @@ class HttpClient {
         client = builder.build()
    }
 
-    fun getURL(url: String) {
+    fun getURL(url: String, callback : (String) -> Unit) {
         val request: Request = Request.Builder()
             .url(url)
             .header("X-Ouinet-Group", getDhtGroup(url))
@@ -98,6 +98,7 @@ class HttpClient {
                     }
                 }
                 thread.start()
+                callback.invoke(response.headers.toString())
             }
         })
     }

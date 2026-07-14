@@ -1,0 +1,88 @@
+plugins {
+    alias(libs.plugins.compose.compiler)
+    id 'org.jetbrains.kotlin.plugin.serialization' version '2.4.0'
+}
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+Properties localProperties = new Properties()
+localProperties.load(rootProject.file('local.properties').newDataInputStream())
+
+android {
+    compileSdk 36
+    buildToolsVersion rootProject.buildToolsVersion
+    defaultConfig {
+        applicationId "ie.equalit.ouinet_examples.android_compose"
+        minSdk 23
+        targetSdk 36
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "CACHE_PUB_KEY", localProperties['CACHE_PUB_KEY']
+        buildConfigField "String", "INJECTOR_CREDENTIALS", localProperties['INJECTOR_CREDENTIALS']
+        buildConfigField "String", "INJECTOR_TLS_CERT", localProperties['INJECTOR_TLS_CERT']
+        buildConfigField "String", "PROXY_PORT", localProperties['PROXY_PORT']
+        buildConfigField "String", "FRONTEND_PORT", localProperties['FRONTEND_PORT']
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = '1.5.15'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    namespace 'ie.equalit.ouinet_examples.android_compose'
+}
+
+dependencies {
+
+    implementation libs.androidx.corektx
+    implementation libs.androidx.appcompat
+    implementation libs.androidx.material3
+    implementation libs.androidx.navigation.compose
+    implementation libs.androidx.runtime
+    implementation libs.androidx.ui.test
+    implementation libs.androidx.ui.text
+    implementation libs.androidx.activity.compose
+    implementation libs.androidx.ui.tooling.preview
+    implementation libs.google.material
+    implementation libs.androidx.constraintlayout
+    if (localProperties['OUINET_LOCAL_LIB']) {
+        project.logger.lifecycle('Substituting local AAR for Ouinet: ' + localProperties['OUINET_LOCAL_LIB'])
+        implementation(files(localProperties['OUINET_LOCAL_LIB']))
+    }
+    else {
+        implementation libs.ouinet.omni
+    }
+    implementation libs.relinker
+    implementation libs.okhttp
+    implementation libs.tools.testrules
+    implementation libs.androidx.material.icons.extended
+
+    testImplementation libs.junit
+    androidTestImplementation libs.kotlin.stdlib
+    androidTestImplementation libs.tools.testcore
+    androidTestImplementation libs.tools.testcorektx
+    androidTestImplementation libs.tools.testjunit
+    androidTestImplementation libs.tools.testjunitktx
+    androidTestImplementation libs.tools.testrunner
+    androidTestImplementation libs.tools.testrules
+    androidTestImplementation libs.androidx.ui.test
+    androidTestImplementation libs.androidx.ui.test.junit4
+    debugImplementation libs.androidx.ui.tooling
+}

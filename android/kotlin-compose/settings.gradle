@@ -1,0 +1,21 @@
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+
+        //maven {
+        //    url "https://s01.oss.sonatype.org/content/repositories/ieequalitouinet-1234"
+        //    content {
+        //        // this repository *only* contains artifacts with group "ie.equalit.ouinet"
+        //        includeGroup "ie.equalit.ouinet"
+        //    }
+        //}
+
+        //flatDir {
+        //    dirs 'app/libs'
+        //}
+    }
+}
+rootProject.name = "ouinet-kotlin"
+include ':app'

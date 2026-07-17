@@ -1,5 +1,7 @@
 package ie.equalit.ouinet_examples.android_compose
 
+import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -8,6 +10,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
@@ -15,29 +18,31 @@ import org.junit.runner.RunWith
 class OuinetStressTest {
 
     @get:Rule
-    var activityScenarioRule = activityScenarioRule<MainActivity>()
+    val composeTestRule = createComposeRule()
 
     @get:Rule
-    val composeRule = createComposeRule()
+    var activityScenarioRule = activityScenarioRule<MainActivity>()
 
     @Before
     fun ouinetStart() {
         Thread.sleep(5000)
-        composeRule.onNodeWithTag("start_button").performClick()
+        composeTestRule.onNodeWithTag("start_button").performClick()
         Thread.sleep(15000)
     }
 
-    /*
     private fun checkOuinetStarted() {
-        onView(withId(R.id.status)).check(matches(withText("State: Started")))
+        composeTestRule.onNodeWithTag("state_text").let {
+            it.isDisplayed()
+            it.assertTextEquals("State: Started")
+        }
     }
 
     private fun checkOuinetRestarted() {
-        onView(withId(R.id.restart)).perform(click())
-        Thread.sleep(15000)
-        onView(withId(R.id.status)).check(matches(withText("State: Started")))
+        composeTestRule.onNodeWithTag("restart_button").performClick()
+        Thread.sleep(20000)
+        checkOuinetStarted()
     }
-
+/*
     private fun checkOuinetClear() {
         onView(withId(R.id.clear)).perform(click())
         Thread.sleep(5000)
@@ -76,6 +81,7 @@ class OuinetStressTest {
         }
     }
 
+ */
     @Test
     fun testOuinetStarted() {
         checkOuinetStarted()
@@ -87,7 +93,7 @@ class OuinetStressTest {
         Thread.sleep(5000)
         checkOuinetRestarted()
     }
-
+/*
     @Test
     fun testRequestTenSitesRestartClear() {
         testOuinetStarted()

@@ -71,7 +71,10 @@ fun OuinetStatusScreen(viewModel: OuinetViewModel) {
             modifier = Modifier.padding(padding).verticalScroll(rememberScrollState()),
             ) {
             CenterAlignedRow {
-                Text(text = "State: ${uiState.state}")
+                Text(
+                    text = "State: ${uiState.state}",
+                    modifier = Modifier.testTag("state_text")
+                )
             }
             if (uiState.state != "Started") {
                 CenterAlignedRow {
@@ -89,7 +92,8 @@ fun OuinetStatusScreen(viewModel: OuinetViewModel) {
                     Button(
                         onClick = {
                             viewModel.restart(context)
-                        }
+                        },
+                        modifier = Modifier.testTag("restart_button")
                     ) {
                         Text(text = stringResource(R.string.restart))
                     }
@@ -143,7 +147,8 @@ fun OuinetStatusScreen(viewModel: OuinetViewModel) {
                     enabled = viewModel.isClearEnabled(),
                     onClick = {
                         viewModel.clearCache(context)
-                    }
+                    },
+                    modifier = Modifier.testTag("clear_button")
                 ) {
                     Text(text = stringResource(R.string.clear))
                 }
@@ -153,7 +158,8 @@ fun OuinetStatusScreen(viewModel: OuinetViewModel) {
                     enabled = viewModel.isShutdownEnabled(),
                     onClick = {
                         viewModel.shutdown(context)
-                    }
+                    },
+                    modifier = Modifier.testTag("shutdown_button")
                 ) {
                     Text(text = stringResource(R.string.shutdown))
                 }

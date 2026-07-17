@@ -11,16 +11,16 @@ import org.junit.Test
 
 class OuinetStartTest {
     @get:Rule
-    var activityScenarioRule = activityScenarioRule<MainActivity>()
+    val composeTestRule = createComposeRule()
 
     @get:Rule
-    val composeRule = createComposeRule()
+    var activityScenarioRule = activityScenarioRule<MainActivity>()
 
     @Test
     fun testOuinetStarted() {
         Thread.sleep(5000)
-        composeRule.onNodeWithTag("start_button").performClick()
+        composeTestRule.onNodeWithTag("start_button").performClick()
         Thread.sleep(15000)
-        composeRule.onNodeWithText("State: Started").assertIsDisplayed()
+        composeTestRule.onNodeWithText("State: Started").assertIsDisplayed()
     }
 }

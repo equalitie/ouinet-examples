@@ -21,7 +21,6 @@ import org.junit.Assert.*
 @RunWith(AndroidJUnit4::class)
 @UiThreadTest
 class OuinetInstrumentedTest {
-    val TAG = "OuinetInstrumentedTest"
 
     private fun ouinetBackground() : OuinetBackground {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
@@ -30,26 +29,55 @@ class OuinetInstrumentedTest {
         return ouinet.background
     }
 
+    private fun ouinetWaitForStarted(background: OuinetBackground) {
+        var i = 0
+        while (i < 30 && background.getState() != "Started") {
+            Thread.sleep(1000)
+            i++
+        }
+    }
+
+    private fun ouinetWaitForDegraded(background: OuinetBackground) {
+        var i = 0
+        while (i < 15 && background.getState() != "Degraded") {
+            Thread.sleep(1000)
+            i++
+        }
+    }
+
     private fun ouinetStartupAndJoinThread(background : OuinetBackground) {
         Log.i(TAG, "Start ouinet")
         val startupThread = background.startup {
             /* Use callback to wait for ouinet client to stabilize */
-            Thread.sleep(5000)
+            ouinetWaitForStarted(background)
             Log.i(TAG, "Ouinet state: ${background.getState()}")
-            assertTrue(background.getState().startsWith("Start"))
+            assertEquals("Started", background.getState())
         }
-        startupThread.join(10000)
+        startupThread.join()
     }
 
     private fun ouinetStartAndJoinThread(background : OuinetBackground) {
         Log.i(TAG, "Start ouinet")
         val startThread = background.start {
             /* Use callback to wait for ouinet client to stabilize */
-            Thread.sleep(5000)
+            ouinetWaitForStarted(background)
             Log.i(TAG, "Ouinet state: ${background.getState()}")
-            assertTrue(background.getState().startsWith("Start"))
+            assertEquals("Started", background.getState())
         }
-        startThread.join(10000)
+        startThread.join()
+    }
+
+    private fun ouinetStartDegradedAndJoinThread(background : OuinetBackground) {
+        Log.i(TAG, "Start ouinet")
+        val startThread = background.start {
+            /* Use callback to wait for ouinet client to stabilize */
+            ouinetWaitForDegraded(background)
+            Log.i(TAG, "Ouinet state: ${background.getState()}")
+            // accept both degraded and started as valid states,
+            // since client may get not stay in degraded state long enough
+            assertTrue(background.getState() == "Degraded" || background.getState() == "Started")
+        }
+        startThread.join()
     }
 
     private fun ouinetStopAndJoinThread(background : OuinetBackground) {
@@ -58,7 +86,7 @@ class OuinetInstrumentedTest {
             Log.i(TAG, "Ouinet state: ${background.getState()}")
             assertEquals("Stopped", background.getState());
         }
-        stopThread.join(10000)
+        stopThread.join()
     }
 
     private fun ouinetShutdownAndJoinThread(background : OuinetBackground) {
@@ -67,14 +95,14 @@ class OuinetInstrumentedTest {
             Log.i(TAG, "Ouinet state: ${background.getState()}")
             assertEquals("Stopped", background.getState());
         }
-        shutdownThread.join(10000)
+        shutdownThread.join()
     }
 
     @Test
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("ie.equalit.ouinet_examples.android_kotlin", appContext.packageName)
+        assertEquals("ie.equalit.ouinet_examples.android_compose", appContext.packageName)
     }
 
     @Test
@@ -172,5 +200,22 @@ class OuinetInstrumentedTest {
             ouinetStartAndJoinThread(background)
         }
         ouinetStopAndJoinThread(background)
+    }
+
+    @Test
+    fun testMultiStartDegradedStop() {
+        Log.i(TAG, "Begin testMultiStartStop")
+        val background = ouinetBackground()
+        ouinetStartupAndJoinThread(background)
+        for (i in 1..5) {
+            Log.i(TAG, "Starting Ouinet, trial $i")
+            ouinetStartDegradedAndJoinThread(background)
+            Log.i(TAG, "Stopping Ouinet, trial $i")
+            ouinetStopAndJoinThread(background)
+        }
+    }
+
+    companion object {
+        private const val TAG = "OuinetInstrumentedTest"
     }
 }

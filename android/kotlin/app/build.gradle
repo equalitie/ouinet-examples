@@ -4,12 +4,18 @@ apply plugin: 'kotlin-android'
 Properties localProperties = new Properties()
 localProperties.load(rootProject.file('local.properties').newDataInputStream())
 
+def libName = null 
+if (localProperties['OUINET_LOCAL_LIB']){    
+    def libPath = file(localProperties['OUINET_LOCAL_LIB'])
+    libName = libPath.name.replaceFirst(/\.aar$/, "")
+}
+
 android {
     compileSdk 36
     buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
         applicationId "ie.equalit.ouinet_examples.android_kotlin"
-        minSdk 21
+        minSdk 23
         targetSdk 36
         versionCode 1
         versionName "1.0"
@@ -22,6 +28,11 @@ android {
         buildConfigField "String", "PROXY_PORT", localProperties['PROXY_PORT']
         buildConfigField "String", "FRONTEND_PORT", localProperties['FRONTEND_PORT']
     }
+
+
+    buildFeatures {
+        buildConfig = true
+        }
 
     buildTypes {
         release {
@@ -47,23 +58,15 @@ dependencies {
     implementation libs.androidx.constraintlayout
     if (localProperties['OUINET_LOCAL_LIB']) {
         project.logger.lifecycle('Substituting local AAR for Ouinet: ' + localProperties['OUINET_LOCAL_LIB'])
-        implementation(files(localProperties['OUINET_LOCAL_LIB']))
+        implementation(name: libName, ext: "aar")
     }
     else {
         implementation libs.ouinet.omni
     }
-    implementation libs.relinker
     implementation libs.okhttp
     implementation libs.tools.testrules
 
     testImplementation libs.junit
-    if (localProperties['OUINET_LOCAL_LIB']) {
-        project.logger.lifecycle('Substituting local AAR for Ouinet: ' + localProperties['OUINET_LOCAL_LIB'])
-        testImplementation(files(localProperties['OUINET_LOCAL_LIB']))
-    }
-    else {
-        testImplementation libs.ouinet.omni
-    }
     androidTestImplementation libs.kotlin.stdlib
     androidTestImplementation libs.tools.testcore
     androidTestImplementation libs.tools.testcorektx
@@ -72,12 +75,5 @@ dependencies {
     androidTestImplementation libs.tools.testrunner
     androidTestImplementation libs.espresso.core
     androidTestImplementation libs.tools.testrules
-    if (localProperties['OUINET_LOCAL_LIB']) {
-        project.logger.lifecycle('Substituting local AAR for Ouinet: ' + localProperties['OUINET_LOCAL_LIB'])
-        androidTestImplementation(files(localProperties['OUINET_LOCAL_LIB']))
-    }
-    else {
-        androidTestImplementation libs.ouinet.omni
-    }
     // TODO: probably there is a nice way to not duplicate dependencies
 }

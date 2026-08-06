@@ -17,9 +17,8 @@ gradle_kotlin_plugin = "2.1.21"
 junit = "4.13.2"
 
 # Ouinet
-kotlinVersion = "2.1.21"
+kotlinVersion = "2.3.0"
 ouinet_version = "1.6.4"
-relinker_version = "1.4.4"
 
 # Third Party
 okhttp = "4.9.3"
@@ -51,5 +50,4 @@ tools-testjunit = { group = "androidx.test.ext", name = "junit", version.ref = "
 tools-testjunitktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "testing_androidx_ext_junit" }
 
 ouinet-omni = { group = "ie.equalit.ouinet", name = "ouinet-omni", version.ref = "ouinet_version" }
-relinker = { group = "com.getkeepsafe.relinker", name = "relinker", version.ref = "relinker_version" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }

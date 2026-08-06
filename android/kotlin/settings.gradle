@@ -1,9 +1,25 @@
+Properties localProperties = new Properties()
+def localPropertiesFile = new File(settingsDir, "local.properties")
+localProperties.load(localPropertiesFile.newDataInputStream())
+
+def libDir = null
+def env = localProperties['OUINET_LOCAL_LIB'] 
+
+if (env !=null){
+    def libPath = file(env)
+    libDir = libPath.parentFile
+}
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-
+        if (libDir) {
+            flatDir {
+                dirs(libDir)
+            }
+        }
         //maven {
         //    url "https://s01.oss.sonatype.org/content/repositories/ieequalitouinet-1234"
         //    content {

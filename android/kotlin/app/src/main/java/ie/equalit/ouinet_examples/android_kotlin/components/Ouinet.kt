@@ -16,7 +16,7 @@ class Ouinet (
             .setCacheHttpPubKey(BuildConfig.CACHE_PUB_KEY)
             .setInjectorCredentials(BuildConfig.INJECTOR_CREDENTIALS)
             .setInjectorTlsCert(BuildConfig.INJECTOR_TLS_CERT)
-            .setTlsCaCertStorePath(context.resources.getString(R.string.cacert_file_path))
+            .setTlsCaCertStoreDir(context.resources.getString(R.string.cacert_file_path))
             .setCacheType(context.resources.getString(R.string.cache_type))
             .setLogLevel(Config.LogLevel.DEBUG)
             //.setDisableBridgeAnnouncement(true)

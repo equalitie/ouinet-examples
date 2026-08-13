@@ -67,7 +67,6 @@ dependencies {
     implementation libs.tools.testrules
 
     testImplementation libs.junit
-    androidTestImplementation libs.kotlin.stdlib
     androidTestImplementation libs.tools.testcore
     androidTestImplementation libs.tools.testcorektx
     androidTestImplementation libs.tools.testjunit

@@ -47,6 +47,11 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
     namespace 'ie.equalit.ouinet_examples.android_kotlin'
 }
 

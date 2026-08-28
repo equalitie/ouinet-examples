@@ -6,9 +6,36 @@ import ie.equalit.ouinet.OuinetBackground
 import ie.equalit.ouinet_examples.android_kotlin.BuildConfig
 import ie.equalit.ouinet_examples.android_kotlin.R
 
-class Ouinet (
-    private val context : Context
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+
+import kotlin.io.path.listDirectoryEntries
+
+class Ouinet(
+    private val context: Context
 ) {
+    companion object {
+        fun assertI2PDExe(ctx: Context) {
+            require(!ctx.applicationInfo.nativeLibraryDir.isNullOrEmpty())
+            val libDir: Path
+            try {
+                libDir = Paths.get(ctx.applicationInfo.nativeLibraryDir)
+            } catch (exception: Exception) {
+                throw Exception("native lib dir is not parseable into a path", exception)
+            }
+            val exepath = libDir.resolve("libexeci2pd.so")
+
+            if (!Files.exists(libDir)) {
+                throw IllegalArgumentException("the dir $libDir does not exist")
+            } else if (!Files.exists(exepath)) {
+                val ls = libDir.listDirectoryEntries().joinToString("\n")
+                throw IllegalArgumentException("the file $exepath does not exist, what exists in libDir is [$ls]")
+            }
+
+        }
+    }
 
     val dnsProtocols = setOf("https", "plain")
     val config: Config by lazy {
@@ -28,8 +55,9 @@ class Ouinet (
             .build()
     }
 
-    lateinit var background : OuinetBackground
-    fun setBackground (ctx: Context) {
+    lateinit var background: OuinetBackground
+    fun setBackground(ctx: Context) {
+        assertI2PDExe(ctx)
         background = OuinetBackground.Builder(ctx)
             .setOuinetConfig(config)
             .build()
@@ -40,7 +68,7 @@ class Ouinet (
         var countryIsoCode = ""
         val locationUtils = CenoLocationUtils(context.application)
         countryIsoCode = locationUtils.currentCountry
-
+    
         // Attempt getting country-specific `BT_BOOTSTRAP_EXTRAS` entry from BuildConfig,
         // fall back to empty BT bootstrap extras otherwise.
         var btbsxsStr= ""
@@ -52,7 +80,7 @@ class Ouinet (
                 }
             }
         }
-
+    
         if (btbsxsStr != "") {
             // Bootstrap extras resource found
             val btbsxs: HashSet<String> = HashSet()

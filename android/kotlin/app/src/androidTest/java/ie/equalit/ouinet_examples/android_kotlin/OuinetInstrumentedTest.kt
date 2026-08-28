@@ -1,7 +1,10 @@
 package ie.equalit.ouinet_examples.android_kotlin
 
 import android.util.Log
+import android.content.Context
 import androidx.test.annotation.UiThreadTest
+
+import kotlin.io.path.listDirectoryEntries
 import ie.equalit.ouinet_examples.android_kotlin.components.Ouinet
 
 import androidx.test.platform.app.InstrumentationRegistry
@@ -12,6 +15,14 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import org.junit.Assert.*
+import org.junit.FixMethodOrder
+import org.junit.runners.MethodSorters
+
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -20,14 +31,20 @@ import org.junit.Assert.*
  */
 @RunWith(AndroidJUnit4::class)
 @UiThreadTest
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class OuinetInstrumentedTest {
-    val TAG = "OuinetInstrumentedTest"
 
+    val TAG = "OuinetInstrumentedTest"
     private fun ouinetBackground() : OuinetBackground {
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        val appContext = context()
         val ouinet = Ouinet(appContext)
         ouinet.setBackground(appContext)
         return ouinet.background
+    }
+
+
+    private fun context() : Context {
+         return InstrumentationRegistry.getInstrumentation().targetContext
     }
 
     private fun ouinetStartupAndJoinThread(background : OuinetBackground) {
@@ -71,21 +88,27 @@ class OuinetInstrumentedTest {
     }
 
     @Test
-    fun useAppContext() {
+    fun n0_useAppContext() {
         // Context of the app under test.
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
+        val appContext = context()
         assertEquals("ie.equalit.ouinet_examples.android_kotlin", appContext.packageName)
     }
 
     @Test
-    fun testOuinetBackgroundStartup() {
+    fun n01_i2pd_exists() {
+        val appContext = context()
+        Ouinet.assertI2PDExe(appContext)
+    }
+
+    @Test
+    fun n1_testOuinetBackgroundStartup() {
         Log.i(TAG, "Begin testOuinetBackgroundStartup")
         val background = ouinetBackground()
         ouinetStartupAndJoinThread(background)
     }
 
     @Test
-    fun testOuinetBackgroundStartupShutdown() {
+    fun n2_testOuinetBackgroundStartupShutdown() {
         Log.i(TAG, "Begin testOuinetBackgroundStartupShutdown")
         val background = ouinetBackground()
         ouinetStartupAndJoinThread(background)
@@ -93,7 +116,7 @@ class OuinetInstrumentedTest {
     }
 
     @Test
-    fun testOuinetBackgroundStartupAndStop() {
+    fun n3_testOuinetBackgroundStartupAndStop() {
         Log.i(TAG, "Begin testOuinetBackgroundStartup")
         val background = ouinetBackground()
         ouinetStartupAndJoinThread(background)
@@ -101,7 +124,7 @@ class OuinetInstrumentedTest {
     }
 
     @Test
-    fun testMultiStartupShutdown() {
+    fun n4_testMultiStartupShutdown() {
         Log.i(TAG, "Begin testMultiStartStop")
         val background = ouinetBackground()
         for (i in 1..5) {
@@ -113,7 +136,7 @@ class OuinetInstrumentedTest {
     }
 
     @Test
-    fun testSingleStartStop() {
+    fun n5_testSingleStartStop() {
         Log.i(TAG, "Begin testSingleStartStop")
         val background = ouinetBackground()
         ouinetStartupAndJoinThread(background)
@@ -122,7 +145,7 @@ class OuinetInstrumentedTest {
     }
 
     @Test
-    fun testMultiStartStop() {
+    fun n6_testMultiStartStop() {
         Log.i(TAG, "Begin testMultiStartStop")
         val background = ouinetBackground()
         ouinetStartupAndJoinThread(background)
@@ -135,7 +158,7 @@ class OuinetInstrumentedTest {
     }
 
     @Test
-    fun testMultiStartStopShutdown() {
+    fun n7_testMultiStartStopShutdown() {
         Log.i(TAG, "Begin testMultiStartStop")
         val background = ouinetBackground()
         ouinetStartupAndJoinThread(background)
@@ -149,7 +172,7 @@ class OuinetInstrumentedTest {
     }
 
     @Test
-    fun testSingleStartMultiStop() {
+    fun n8_testSingleStartMultiStop() {
         Log.i(TAG, "Begin testSingleStartMultiStop")
         val background = ouinetBackground()
         ouinetStartupAndJoinThread(background)
@@ -163,7 +186,7 @@ class OuinetInstrumentedTest {
     }
 
     @Test
-    fun testMultiStartSingleStop() {
+    fun n9_testMultiStartSingleStop() {
         Log.i(TAG, "Begin testMultiStartSingleStop")
         val background = ouinetBackground()
         ouinetStartupAndJoinThread(background)

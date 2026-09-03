@@ -12,12 +12,13 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 import kotlin.io.path.listDirectoryEntries
+import kotlin.io.path.createDirectories
 
 class Ouinet(
     private val context: Context
 ) {
     companion object {
-        fun assertI2PDExe(ctx: Context) {
+        fun findI2PDExe(ctx: Context): Path {
             require(!ctx.applicationInfo.nativeLibraryDir.isNullOrEmpty())
             val libDir: Path
             try {
@@ -33,8 +34,26 @@ class Ouinet(
                 val ls = libDir.listDirectoryEntries().joinToString("\n")
                 throw IllegalArgumentException("the file $exepath does not exist, what exists in libDir is [$ls]")
             }
-
+            return exepath
         }
+
+        fun startI2PD(ctx: Context): Process {
+            val exepath = findI2PDExe(ctx)
+            val libDir = exepath.getParent()
+
+            val datadir = Paths.get(ctx.cacheDir.toString(), "i2pd")
+            if (!Files.exists(datadir)) {
+                datadir.createDirectories()
+            }
+
+            val processB = ProcessBuilder(exepath.toString(), "--datadir=$datadir")
+            processB.directory(File(libDir.toString()))
+            processB.redirectErrorStream(true)
+
+            val process = processB.start()
+            return process
+        }
+
     }
 
     val dnsProtocols = setOf("https", "plain")
@@ -57,7 +76,6 @@ class Ouinet(
 
     lateinit var background: OuinetBackground
     fun setBackground(ctx: Context) {
-        assertI2PDExe(ctx)
         background = OuinetBackground.Builder(ctx)
             .setOuinetConfig(config)
             .build()

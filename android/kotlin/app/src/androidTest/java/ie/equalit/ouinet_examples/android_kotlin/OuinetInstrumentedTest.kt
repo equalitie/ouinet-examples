@@ -1,28 +1,20 @@
 package ie.equalit.ouinet_examples.android_kotlin
 
-import android.util.Log
 import android.content.Context
+import android.util.Log
 import androidx.test.annotation.UiThreadTest
-
-import kotlin.io.path.listDirectoryEntries
-import ie.equalit.ouinet_examples.android_kotlin.components.Ouinet
-
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import ie.equalit.ouinet.OuinetBackground
-
-import org.junit.Test
-import org.junit.runner.RunWith
-
-import org.junit.Assert.*
-import org.junit.FixMethodOrder
-import org.junit.runners.MethodSorters
-
+import ie.equalit.ouinet_examples.android_kotlin.components.Ouinet
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.io.File
-import java.nio.file.Files
-import java.nio.file.Paths
+import java.util.concurrent.TimeUnit
+import org.junit.Assert.*
+import org.junit.FixMethodOrder
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.MethodSorters
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -35,60 +27,84 @@ import java.nio.file.Paths
 class OuinetInstrumentedTest {
 
     val TAG = "OuinetInstrumentedTest"
-    private fun ouinetBackground() : OuinetBackground {
+    private fun ouinetBackground(): OuinetBackground {
         val appContext = context()
         val ouinet = Ouinet(appContext)
         ouinet.setBackground(appContext)
         return ouinet.background
     }
 
-
-    private fun context() : Context {
-         return InstrumentationRegistry.getInstrumentation().targetContext
+    private fun context(): Context {
+        return InstrumentationRegistry.getInstrumentation().targetContext
     }
 
-    private fun ouinetStartupAndJoinThread(background : OuinetBackground) {
+    private fun ouinetStartupAndJoinThread(background: OuinetBackground) {
         Log.i(TAG, "Start ouinet")
-        val startupThread = background.startup {
-            /* Use callback to wait for ouinet client to stabilize */
-            Thread.sleep(5000)
-            Log.i(TAG, "Ouinet state: ${background.getState()}")
-            assertTrue(background.getState().startsWith("Start"))
-        }
+        val startupThread =
+                background.startup {
+                    /* Use callback to wait for ouinet client to stabilize */
+                    Thread.sleep(5000)
+                    Log.i(TAG, "Ouinet state: ${background.getState()}")
+                    assertTrue(background.getState().startsWith("Start"))
+                }
         startupThread.join(10000)
     }
 
-    private fun ouinetStartAndJoinThread(background : OuinetBackground) {
+    private fun ouinetStartAndJoinThread(background: OuinetBackground) {
         Log.i(TAG, "Start ouinet")
-        val startThread = background.start {
-            /* Use callback to wait for ouinet client to stabilize */
-            Thread.sleep(5000)
-            Log.i(TAG, "Ouinet state: ${background.getState()}")
-            assertTrue(background.getState().startsWith("Start"))
-        }
+        val startThread =
+                background.start {
+                    /* Use callback to wait for ouinet client to stabilize */
+                    Thread.sleep(5000)
+                    Log.i(TAG, "Ouinet state: ${background.getState()}")
+                    assertTrue(background.getState().startsWith("Start"))
+                }
         startThread.join(10000)
     }
 
-    private fun ouinetStopAndJoinThread(background : OuinetBackground) {
+    private fun ouinetStopAndJoinThread(background: OuinetBackground) {
         Log.i(TAG, "Stop ouinet")
-        val stopThread = background.stop {
-            Log.i(TAG, "Ouinet state: ${background.getState()}")
-            assertEquals("Stopped", background.getState());
-        }
+        val stopThread =
+                background.stop {
+                    Log.i(TAG, "Ouinet state: ${background.getState()}")
+                    assertEquals("Stopped", background.getState())
+                }
         stopThread.join(10000)
     }
 
-    private fun ouinetShutdownAndJoinThread(background : OuinetBackground) {
+    private fun ouinetShutdownAndJoinThread(background: OuinetBackground) {
         Log.i(TAG, "Start ouinet")
-        val shutdownThread = background.shutdown(false) {
-            Log.i(TAG, "Ouinet state: ${background.getState()}")
-            assertEquals("Stopped", background.getState());
-        }
+        val shutdownThread =
+                background.shutdown(false) {
+                    Log.i(TAG, "Ouinet state: ${background.getState()}")
+                    assertEquals("Stopped", background.getState())
+                }
         shutdownThread.join(10000)
     }
 
+    private fun collect_output(process: Process, seconds: Int): String {
+        val output = StringBuilder()
+        var readerThread = Thread {
+            val reader = BufferedReader(InputStreamReader(process.inputStream))
+            reader.use { it.forEachLine { line -> output.appendLine(line) } }
+        }
+        readerThread.start()
+        val timed_out = !process.waitFor(seconds.toLong(), TimeUnit.SECONDS)
+        readerThread.join(1000)
+
+        val result = output.toString()
+        if (!timed_out) {
+            throw Exception("premature end of process, output: '$output'")
+        }
+        if (result.isNullOrEmpty()) {
+            throw Exception("i2pd has exited without output")
+        }
+
+        return result
+    }
+
     @Test
-    fun n0_useAppContext() {
+    fun n00_useAppContext() {
         // Context of the app under test.
         val appContext = context()
         assertEquals("ie.equalit.ouinet_examples.android_kotlin", appContext.packageName)
@@ -97,7 +113,16 @@ class OuinetInstrumentedTest {
     @Test
     fun n01_i2pd_exists() {
         val appContext = context()
-        Ouinet.assertI2PDExe(appContext)
+        require(!Ouinet.findI2PDExe(appContext).toString().isNullOrEmpty())
+    }
+
+    @Test
+    fun n02_i2pd_starts() {
+        val process = Ouinet.startI2PD(context())
+        val output = collect_output(process, seconds = 2)
+        require(!output.isNullOrEmpty())
+        Log.d(TAG, output)
+        process.destroyForcibly()
     }
 
     @Test
@@ -180,7 +205,7 @@ class OuinetInstrumentedTest {
         ouinetStartAndJoinThread(background)
         for (i in 1..3) {
             Log.i(TAG, "Stopping Ouinet, trial $i")
-            Thread.sleep(100);
+            Thread.sleep(100)
             ouinetStopAndJoinThread(background)
         }
     }

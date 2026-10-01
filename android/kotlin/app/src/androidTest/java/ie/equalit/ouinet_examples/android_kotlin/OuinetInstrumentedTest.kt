@@ -9,6 +9,7 @@ import ie.equalit.ouinet.OuinetBackground
 import ie.equalit.ouinet_examples.android_kotlin.components.Ouinet
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.io.InterruptedIOException
 import java.util.concurrent.TimeUnit
 import org.junit.Assert.*
 import org.junit.FixMethodOrder
@@ -38,16 +39,42 @@ class OuinetInstrumentedTest {
         return InstrumentationRegistry.getInstrumentation().targetContext
     }
 
-    private fun ouinetStartupAndJoinThread(background: OuinetBackground) {
+    private fun ouinetStartupAndJoinThread(background: OuinetBackground): Thread {
         Log.i(TAG, "Start ouinet")
+        var callback_run = false
         val startupThread =
                 background.startup {
                     /* Use callback to wait for ouinet client to stabilize */
-                    Thread.sleep(5000)
-                    Log.i(TAG, "Ouinet state: ${background.getState()}")
-                    assertTrue(background.getState().startsWith("Start"))
+                    // there is no guarantee that this will ever be reached
+                    callback_run = true
+                    
+                    val step = 1000 // every second
+                    val max_wait = 9000 //
+                    for (i in 0 until max_wait/step) {
+                        Thread.sleep(step.toLong())
+                        val state = background.getState()
+                        if (!state.startsWith("Created")){
+                            break
+                        }
+                    }
+
+                    if (background.getState().startsWith("Stopped")){
+                        throw Exception("Ouinet state is '${background.getState()}' but we were just waiting for it to start!") 
+                    }
+                    if (!background.getState().startsWith("Start")){
+                        throw Exception("Ouinet state is '${background.getState()}' but it should have been Start by now") 
+                    }
                 }
+
         startupThread.join(10000)
+        if (!callback_run) {
+            throw Exception("startup callback was not reached -> StartClient() did not return control in 10 seconds")
+        }
+
+        if (startupThread.isAlive()) {
+            throw Exception("The startup thread has timed out without it having started")
+        }
+        return startupThread
     }
 
     private fun ouinetStartAndJoinThread(background: OuinetBackground) {
@@ -63,6 +90,12 @@ class OuinetInstrumentedTest {
     }
 
     private fun ouinetStopAndJoinThread(background: OuinetBackground) {
+        // We have a problem here. This can stop the background before it has
+        // ever was started. and it will crash the testing framework entirely.
+        
+        if (background.getState().startsWith("Created")){
+            throw Exception("Ouinet state is '${background.getState()}' but we attempted to stop it") 
+        }
         Log.i(TAG, "Stop ouinet")
         val stopThread =
                 background.stop {
@@ -73,7 +106,10 @@ class OuinetInstrumentedTest {
     }
 
     private fun ouinetShutdownAndJoinThread(background: OuinetBackground) {
-        Log.i(TAG, "Start ouinet")
+        if (background.getState().startsWith("Created")){
+            throw Exception("Ouinet state is '${background.getState()}' but we attempted to shut it down") 
+        }
+        Log.i(TAG, "Shutdown ouinet")
         val shutdownThread =
                 background.shutdown(false) {
                     Log.i(TAG, "Ouinet state: ${background.getState()}")
@@ -85,12 +121,27 @@ class OuinetInstrumentedTest {
     private fun collect_output(process: Process, seconds: Int): String {
         val output = StringBuilder()
         var readerThread = Thread {
+            Log.d(TAG, "thread: start")
             val reader = BufferedReader(InputStreamReader(process.inputStream))
-            reader.use { it.forEachLine { line -> output.appendLine(line) } }
+            try {
+                reader.use {
+                    it.forEachLine { line ->
+                        output.appendLine(line)
+                        Log.d(TAG, line)
+                    }
+                }
+            } catch (exception: InterruptedIOException) {
+                Log.d(TAG, "thread: reading interrupted")
+                reader.close()
+            }
+            Log.d(TAG, "thread: exited")
         }
         readerThread.start()
         val timed_out = !process.waitFor(seconds.toLong(), TimeUnit.SECONDS)
+        Log.d(TAG, "interrupting the reader thread")
+        readerThread.interrupt()
         readerThread.join(1000)
+        Log.d(TAG, "waited for thread")
 
         val result = output.toString()
         if (!timed_out) {
@@ -105,36 +156,43 @@ class OuinetInstrumentedTest {
 
     @Test
     fun n00_useAppContext() {
+        // Log.d(TAG, "Pid is : $Process.myPid()")
+        Log.d(TAG, "checking that app context is what we expect")
         // Context of the app under test.
         val appContext = context()
         assertEquals("ie.equalit.ouinet_examples.android_kotlin", appContext.packageName)
+        Log.d(TAG, "app context is what we expect")
     }
 
     @Test
     fun n01_i2pd_exists() {
+        Log.d(TAG, "checking that i2pd exists")
         val appContext = context()
         require(!Ouinet.findI2PDExe(appContext).toString().isNullOrEmpty())
+        Log.d(TAG, "i2pd exists")
     }
 
     @Test
     fun n02_i2pd_starts() {
+        Log.d(TAG, "Starting test of i2pd")
         val process = Ouinet.startI2PD(context())
         val output = collect_output(process, seconds = 2)
         require(!output.isNullOrEmpty())
-        Log.d(TAG, output)
+        // Log.d(TAG, output)
+        Log.d(TAG, "destroying the process")
         process.destroyForcibly()
     }
 
     @Test
     fun n1_testOuinetBackgroundStartup() {
-        Log.i(TAG, "Begin testOuinetBackgroundStartup")
+        Log.d(TAG, "Begin testOuinetBackgroundStartup")
         val background = ouinetBackground()
-        ouinetStartupAndJoinThread(background)
+        val thread = ouinetStartupAndJoinThread(background)
     }
 
     @Test
     fun n2_testOuinetBackgroundStartupShutdown() {
-        Log.i(TAG, "Begin testOuinetBackgroundStartupShutdown")
+        Log.d(TAG, "Begin testOuinetBackgroundStartupShutdown")
         val background = ouinetBackground()
         ouinetStartupAndJoinThread(background)
         ouinetShutdownAndJoinThread(background)
@@ -142,7 +200,7 @@ class OuinetInstrumentedTest {
 
     @Test
     fun n3_testOuinetBackgroundStartupAndStop() {
-        Log.i(TAG, "Begin testOuinetBackgroundStartup")
+        Log.d(TAG, "Begin testOuinetBackgroundStartup")
         val background = ouinetBackground()
         ouinetStartupAndJoinThread(background)
         ouinetStopAndJoinThread(background)
@@ -150,7 +208,7 @@ class OuinetInstrumentedTest {
 
     @Test
     fun n4_testMultiStartupShutdown() {
-        Log.i(TAG, "Begin testMultiStartStop")
+        Log.d(TAG, "Begin testMultiStartStop")
         val background = ouinetBackground()
         for (i in 1..5) {
             Log.i(TAG, "Starting Ouinet, trial $i")
@@ -162,7 +220,7 @@ class OuinetInstrumentedTest {
 
     @Test
     fun n5_testSingleStartStop() {
-        Log.i(TAG, "Begin testSingleStartStop")
+        Log.d(TAG, "Begin testSingleStartStop")
         val background = ouinetBackground()
         ouinetStartupAndJoinThread(background)
         ouinetStartAndJoinThread(background)
@@ -171,7 +229,7 @@ class OuinetInstrumentedTest {
 
     @Test
     fun n6_testMultiStartStop() {
-        Log.i(TAG, "Begin testMultiStartStop")
+        Log.d(TAG, "Begin testMultiStartStop")
         val background = ouinetBackground()
         ouinetStartupAndJoinThread(background)
         for (i in 1..5) {
@@ -184,7 +242,7 @@ class OuinetInstrumentedTest {
 
     @Test
     fun n7_testMultiStartStopShutdown() {
-        Log.i(TAG, "Begin testMultiStartStop")
+        Log.d(TAG, "Begin testMultiStartStop")
         val background = ouinetBackground()
         ouinetStartupAndJoinThread(background)
         for (i in 1..5) {
@@ -198,7 +256,7 @@ class OuinetInstrumentedTest {
 
     @Test
     fun n8_testSingleStartMultiStop() {
-        Log.i(TAG, "Begin testSingleStartMultiStop")
+        Log.d(TAG, "Begin testSingleStartMultiStop")
         val background = ouinetBackground()
         ouinetStartupAndJoinThread(background)
         Log.i(TAG, "Starting Ouinet")
@@ -212,7 +270,7 @@ class OuinetInstrumentedTest {
 
     @Test
     fun n9_testMultiStartSingleStop() {
-        Log.i(TAG, "Begin testMultiStartSingleStop")
+        Log.d(TAG, "Begin testMultiStartSingleStop")
         val background = ouinetBackground()
         ouinetStartupAndJoinThread(background)
         for (i in 1..3) {

@@ -19,7 +19,7 @@ class Ouinet (
             .setCacheHttpPubKey(BuildConfig.CACHE_PUB_KEY)
             .setInjectorCredentials(BuildConfig.INJECTOR_CREDENTIALS)
             .setInjectorTlsCert(BuildConfig.INJECTOR_TLS_CERT)
-            .setTlsCaCertStorePath(context.resources.getString(R.string.cacert_file_path))
+            .setTlsCaCertStoreDir(context.resources.getString(R.string.cacert_file_path))
             .setCacheType(context.resources.getString(R.string.cache_type))
             .setLogLevel(Config.LogLevel.DEBUG)
             //.setDisableBridgeAnnouncement(true)
@@ -28,6 +28,7 @@ class Ouinet (
             .setListenOnTcp(context.resources.getString(R.string.loopback_ip) + ":" + BuildConfig.PROXY_PORT)
             .setFrontEndEp(context.resources.getString(R.string.loopback_ip) + ":" + BuildConfig.FRONTEND_PORT)
             .setDnsProtocols(dnsProtocols)
+            .addRequestField("X-Ouinet-Route: ExternalProxy 127.0.0.1:8080")
             .build()
     }
 

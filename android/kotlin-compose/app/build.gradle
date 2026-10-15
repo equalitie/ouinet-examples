@@ -71,6 +71,7 @@ dependencies {
     }
     implementation libs.relinker
     implementation libs.okhttp
+    implementation libs.mobileproxylib
     implementation libs.tools.testrules
     implementation libs.androidx.material.icons.extended
 

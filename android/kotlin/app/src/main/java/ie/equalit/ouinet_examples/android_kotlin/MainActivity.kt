@@ -3,7 +3,6 @@ package ie.equalit.ouinet_examples.android_kotlin
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Process
 import android.util.Log
@@ -34,6 +33,7 @@ import java.security.cert.CertificateException
 import java.security.cert.CertificateFactory
 import java.security.cert.X509Certificate
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import javax.net.ssl.*
 import kotlin.math.floor
 import kotlin.math.ln
@@ -375,6 +375,9 @@ class MainActivity : AppCompatActivity() {
             val trustManagers: Array<TrustManager> = getOuinetTrustManager()
 
             val builder = OkHttpClient.Builder()
+            builder.connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
             builder.sslSocketFactory(
                 getSSLSocketFactory(trustManagers),
                 (trustManagers[0] as X509TrustManager)

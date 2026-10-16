@@ -63,7 +63,14 @@ class Ouinet(
             .setInjectorCredentials(BuildConfig.INJECTOR_CREDENTIALS)
             .setInjectorTlsCert(BuildConfig.INJECTOR_TLS_CERT)
             .setTlsCaCertStoreDir(context.resources.getString(R.string.cacert_file_path))
-            .setCacheType(context.resources.getString(R.string.cache_type))
+            //.setCacheType(context.resources.getString(R.string.cache_type))
+            .setCacheType("bep3-http-over-i2p")
+            .setInjectorEp(BuildConfig.INJECTOR_EP)
+            .setI2pBep3Tracker(BuildConfig.I2P_BEP3_TRACKER)
+            .setEnableI2pServiceExt("127.0.0.1:7656")
+            //.setEnableI2pServiceExe(findI2PDExe(context).toString())
+            //.setEnableI2pServiceLib(true)
+            .addRequestField("X-Ouinet-Route: PublicInjector Bep3HTTPOverI2P")
             .setLogLevel(Config.LogLevel.DEBUG)
             //.setDisableBridgeAnnouncement(true)
             //.setDisableOriginAccess(true)
@@ -76,6 +83,7 @@ class Ouinet(
 
     lateinit var background: OuinetBackground
     fun setBackground(ctx: Context) {
+        startI2PD(ctx)
         background = OuinetBackground.Builder(ctx)
             .setOuinetConfig(config)
             .build()

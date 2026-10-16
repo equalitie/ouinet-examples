@@ -27,6 +27,8 @@ android {
         buildConfigField "String", "INJECTOR_TLS_CERT", localProperties['INJECTOR_TLS_CERT']
         buildConfigField "String", "PROXY_PORT", localProperties['PROXY_PORT']
         buildConfigField "String", "FRONTEND_PORT", localProperties['FRONTEND_PORT']
+        buildConfigField "String", "INJECTOR_EP", localProperties['INJECTOR_EP']
+        buildConfigField "String", "I2P_BEP3_TRACKER", localProperties['I2P_BEP3_TRACKER']
     }
 
 

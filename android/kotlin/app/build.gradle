@@ -11,12 +11,12 @@ if (localProperties['OUINET_LOCAL_LIB']){
 }
 
 android {
-    compileSdk 36
+    compileSdk 37
     buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
         applicationId "ie.equalit.ouinet_examples.android_kotlin"
-        minSdk 23
-        targetSdk 36
+        minSdk 26
+        targetSdk 37
         versionCode 1
         versionName "1.0"
 
@@ -71,6 +71,7 @@ dependencies {
         implementation libs.ouinet.omni
     }
     implementation libs.okhttp
+    implementation 'com.getkeepsafe.relinker:relinker:1.4.5'
     implementation libs.tools.testrules
 
     testImplementation libs.junit

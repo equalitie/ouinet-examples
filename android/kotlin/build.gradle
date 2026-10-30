@@ -13,7 +13,7 @@ buildscript {
 }
 
 ext {
-    buildToolsVersion = "36.0.0"
+    buildToolsVersion = "37.0.0"
 }
 
 task clean(type: Delete) {

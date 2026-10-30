@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 
 Properties localProperties = new Properties()
 localProperties.load(rootProject.file('local.properties').newDataInputStream())
@@ -45,11 +44,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     packaging {
         jniLibs {
@@ -57,6 +53,10 @@ android {
         }
     }
     namespace 'ie.equalit.ouinet_examples.android_kotlin'
+}
+
+kotlin {
+    jvmToolchain(17)
 }
 
 dependencies {

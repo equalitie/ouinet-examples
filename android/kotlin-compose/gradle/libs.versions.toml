@@ -11,14 +11,14 @@ google_material = "1.14.0"
 
 # Gradle
 #noinspection AndroidGradlePluginVersion
-gradle_android_plugin = "8.9.3"
-gradle_kotlin_plugin = "2.4.0"
+gradle_android_plugin = "9.3.3"
+gradle_kotlin_plugin = "2.4.21"
 
 # Kotlin
 junit = "4.13.2"
 
 # Ouinet
-kotlinVersion = "2.4.0"
+kotlinVersion = "2.4.21"
 materialIconsExtended = "1.7.8"
 navigationComposeVersion = "2.9.0"
 ouinet_version = "1.6.8"

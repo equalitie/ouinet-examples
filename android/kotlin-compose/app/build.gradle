@@ -1,20 +1,19 @@
 plugins {
     alias(libs.plugins.compose.compiler)
-    id 'org.jetbrains.kotlin.plugin.serialization' version '2.4.0'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '2.4.21'
 }
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 
 Properties localProperties = new Properties()
 localProperties.load(rootProject.file('local.properties').newDataInputStream())
 
 android {
-    compileSdk 36
+    compileSdk 37
     buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
         applicationId "ie.equalit.ouinet_examples.android_compose"
-        minSdk 23
-        targetSdk 36
+        minSdk 26
+        targetSdk 37
         versionCode 1
         versionName "1.0"
 
@@ -35,18 +34,20 @@ android {
     }
     buildFeatures {
         compose true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = '1.5.15'
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     namespace 'ie.equalit.ouinet_examples.android_compose'
+}
+
+kotlin {
+    jvmToolchain(17)
 }
 
 dependencies {

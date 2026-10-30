@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">app2</string>
+    <string name="url_example">https://ouinet.work</string>
+    <string name="get">Get</string>
+    <string name="app_title">Ouinet Tester</string>
+    <string name="start">Start</string>
+    <string name="restart">Restart</string>
+    <string name="groups_text">Groups count: %d</string>
+    <string name="cache_text">Cache size: %s</string>
+    <string name="frontend_polling">Frontend Polling</string>
+    <string name="clear">Clear</string>
+    <string name="shutdown">Shutdown</string>
+    <string name="response_header">Response Header</string>
+    <string name="response_body">Response Body</string>
+
+    <string name="cacert_file_path" translatable="false">file:///android_asset/cacert.pem</string>
+    <string name="cache_type" translatable="false">bep5-http</string>
+    <string name="loopback_ip" translatable="false">127.0.0.1</string>
+</resources>

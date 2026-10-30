@@ -23,12 +23,14 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "String", "CACHE_PUB_KEY", localProperties['CACHE_PUB_KEY']
-        buildConfigField "String", "INJECTOR_CREDENTIALS", localProperties['INJECTOR_CREDENTIALS']
+        buildConfigField "String", "CACHE_TYPE", localProperties['CACHE_TYPE'] ?: '"bep5-http"'
+        buildConfigField "String", "INJECTOR_CREDENTIALS", localProperties['INJECTOR_CREDENTIALS'] ?: '""'
         buildConfigField "String", "INJECTOR_TLS_CERT", localProperties['INJECTOR_TLS_CERT']
         buildConfigField "String", "PROXY_PORT", localProperties['PROXY_PORT']
         buildConfigField "String", "FRONTEND_PORT", localProperties['FRONTEND_PORT']
-        buildConfigField "String", "INJECTOR_EP", localProperties['INJECTOR_EP']
-        buildConfigField "String", "I2P_BEP3_TRACKER", localProperties['I2P_BEP3_TRACKER']
+        buildConfigField "String", "INJECTOR_EP", localProperties['INJECTOR_EP'] ?: '""'
+        buildConfigField "String", "I2P_BEP3_TRACKER", localProperties['I2P_BEP3_TRACKER'] ?: '""'
+        buildConfigField "String", "OUISYNC_PAGE_INDEX", localProperties['OUISYNC_PAGE_INDEX'] ?: '""'
     }
 
 

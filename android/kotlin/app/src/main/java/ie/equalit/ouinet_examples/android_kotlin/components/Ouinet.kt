@@ -80,7 +80,7 @@ class Ouinet(
         if (BuildConfig.CACHE_TYPE == "ouisync" &&
             BuildConfig.OUISYNC_PAGE_INDEX != ""
         ) {
-            builder.setOuisyncPageIndex("https://ouisync.net/r#AwEgz-AdVVaLplUYM90raG36ybZVcZc6OzQmDouF1-R4NU8gB8Ztn86vM6ydVMPpjLluBzwQlWlSSrdyfvKTZy9I9XA?name=page-index")
+            builder.setOuisyncPageIndex(BuildConfig.OUISYNC_PAGE_INDEX )
         }
 
         if (BuildConfig.CACHE_TYPE == "bep3-http-over-i2p") {

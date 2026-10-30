@@ -15,21 +15,40 @@ class Ouinet (
 
     val dnsProtocols = setOf("https", "plain")
     val config: Config by lazy {
-        Config.ConfigBuilder(context)
+        var builder = Config.ConfigBuilder(context)
             .setCacheHttpPubKey(BuildConfig.CACHE_PUB_KEY)
-            .setInjectorCredentials(BuildConfig.INJECTOR_CREDENTIALS)
             .setInjectorTlsCert(BuildConfig.INJECTOR_TLS_CERT)
             .setTlsCaCertStoreDir(context.resources.getString(R.string.cacert_file_path))
-            .setCacheType(context.resources.getString(R.string.cache_type))
+            .setCacheType(BuildConfig.CACHE_TYPE)
             .setLogLevel(Config.LogLevel.DEBUG)
-            //.setDisableBridgeAnnouncement(true)
-            //.setDisableOriginAccess(true)
-            //.setBtBootstrapExtras(setOf("198.51.100.99"))
             .setListenOnTcp(context.resources.getString(R.string.loopback_ip) + ":" + BuildConfig.PROXY_PORT)
             .setFrontEndEp(context.resources.getString(R.string.loopback_ip) + ":" + BuildConfig.FRONTEND_PORT)
             .setDnsProtocols(dnsProtocols)
-            .addRequestField("X-Ouinet-Route: ExternalProxy 127.0.0.1:8080")
-            .build()
+            .setDropSavedOpts(true)
+            //.setDisableBridgeAnnouncement(true)
+            //.setBtBootstrapExtras(getBtBootstrapExtras())
+
+        if (BuildConfig.INJECTOR_EP != "" &&
+            BuildConfig.INJECTOR_CREDENTIALS != "") {
+            builder.setInjectorEp(BuildConfig.INJECTOR_EP)
+                .setInjectorCredentials(BuildConfig.INJECTOR_CREDENTIALS)
+        }
+
+        if (BuildConfig.CACHE_TYPE == "ouisync" &&
+            BuildConfig.OUISYNC_PAGE_INDEX != ""
+        ) {
+            builder.setOuisyncPageIndex(BuildConfig.OUISYNC_PAGE_INDEX )
+        }
+
+        if (BuildConfig.CACHE_TYPE == "bep3-http-over-i2p") {
+            builder.setI2pBep3Tracker(BuildConfig.I2P_BEP3_TRACKER)
+                //.setEnableI2pServiceExt("127.0.0.1:7656")
+                //.setEnableI2pServiceExe(findI2PDExe(context).toString())
+                .setEnableI2pServiceLib(true)
+                .addRequestField("X-Ouinet-Route: PublicInjector Bep3HTTPOverI2P")
+                .setDisableOriginAccess(true)
+        }
+        builder.build()
     }
 
     lateinit var background : OuinetBackground

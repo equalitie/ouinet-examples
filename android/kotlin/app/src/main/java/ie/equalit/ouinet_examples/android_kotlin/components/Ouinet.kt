@@ -86,8 +86,8 @@ class Ouinet(
         if (BuildConfig.CACHE_TYPE == "bep3-http-over-i2p") {
             builder.setI2pBep3Tracker(BuildConfig.I2P_BEP3_TRACKER)
                 //.setEnableI2pServiceExt("127.0.0.1:7656")
-                //.setEnableI2pServiceExe(findI2PDExe(context).toString())
-                .setEnableI2pServiceLib(true)
+                .setEnableI2pServiceExe(findI2PDExe(context).toString())
+                //.setEnableI2pServiceLib(true)
                 .addRequestField("X-Ouinet-Route: PublicInjector Bep3HTTPOverI2P")
                 .setDisableOriginAccess(true)
         }

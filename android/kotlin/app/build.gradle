@@ -74,7 +74,6 @@ dependencies {
     }
     implementation libs.okhttp
     implementation 'com.getkeepsafe.relinker:relinker:1.4.5'
-    implementation libs.tools.testrules
 
     testImplementation libs.junit
     androidTestImplementation libs.tools.testcore

@@ -51,6 +51,7 @@ captures/
 # Comment next line if keeping position of elements in Navigation Editor is relevant for you
 .idea/navEditor.xml
 android/kotlin/.idea
+android/kotlin-compose/.idea
 android/java/.idea
 
 # Keystore files

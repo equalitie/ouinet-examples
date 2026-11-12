@@ -28,6 +28,7 @@ android {
         buildConfigField "String", "INJECTOR_EP", localProperties['INJECTOR_EP'] ?: '""'
         buildConfigField "String", "I2P_BEP3_TRACKER", localProperties['I2P_BEP3_TRACKER'] ?: '""'
         buildConfigField "String", "OUISYNC_PAGE_INDEX", localProperties['OUISYNC_PAGE_INDEX'] ?: '""'
+        buildConfigField "String", "OUTLINE_KEY", localProperties['OUTLINE_KEY'] ?: '""'
     }
 
     buildTypes {

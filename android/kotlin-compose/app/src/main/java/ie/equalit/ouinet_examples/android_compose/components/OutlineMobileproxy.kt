@@ -1,6 +1,7 @@
 package ie.equalit.ouinet_examples.android_compose.components
 
 import android.content.Context
+import ie.equalit.ouinet_examples.android_compose.BuildConfig
 import mobileproxy.Mobileproxy
 import mobileproxy.Proxy
 import mobileproxy.StreamDialer
@@ -16,9 +17,13 @@ class OutlineMobileproxy(private val context : Context) {
     fun setConfig() {
         // Setup and start Outline mobile proxy
         val testDomains = Mobileproxy.newListFromLines("ouinet.work\ni.ytimg.com")
-        val strategiesConfig: String = context.assets.open("config.yaml")
-            .bufferedReader()
-            .use(BufferedReader::readText)
+        val strategiesConfig = if(BuildConfig.OUTLINE_KEY != "") {
+            "fallback:\n  - " + BuildConfig.OUTLINE_KEY
+        } else {
+            context.assets.open("config.yaml")
+                .bufferedReader()
+                .use(BufferedReader::readText)
+        }
         dialer = Mobileproxy.newSmartStreamDialer(testDomains, strategiesConfig, Mobileproxy.newStderrLogWriter())
     }
 

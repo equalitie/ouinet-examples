@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.test.annotation.UiThreadTest
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import ie.equalit.ouinet.BuildConfig
 import ie.equalit.ouinet.OuinetBackground
 import ie.equalit.ouinet_examples.android_compose.components.Ouinet
 import java.io.BufferedReader
@@ -31,7 +32,7 @@ class OuinetInstrumentedTest {
     private fun ouinetBackground(): OuinetBackground {
         val appContext = context()
         val ouinet = Ouinet(appContext)
-        ouinet.setBackground(appContext)
+        ouinet.setup("bep5-http")
         return ouinet.background
     }
 

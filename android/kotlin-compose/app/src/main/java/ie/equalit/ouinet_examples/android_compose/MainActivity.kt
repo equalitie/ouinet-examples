@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "Launching MainActivity")
         mobileproxy.setConfig()
         mobileproxy.start()
-        ouinet.setBackground(this)
+        ouinet.setup(BuildConfig.CACHE_TYPE)
         val viewModel = OuinetViewModel(ouinet, httpClient)
         setContent { MaterialTheme { OuinetView(viewModel) } }
     }

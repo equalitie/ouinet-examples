@@ -26,7 +26,8 @@ data class OuinetUiState(
     val cacheSize: String = "0",
     val response: String = "",
     val body: String = "",
-    var pollingEnabled: Boolean = true,
+    var pollingEnabled: Boolean = false,
+    var cacheType: String = BuildConfig.CACHE_TYPE,
 )
 
 class OuinetViewModel(private val ouinet: Ouinet?, private val http: HttpClient?) : ViewModel() {
@@ -39,9 +40,10 @@ class OuinetViewModel(private val ouinet: Ouinet?, private val http: HttpClient?
     }
 
     fun start(context: Context) {
+        ouinet!!.setup(uiState.value.cacheType)
         val toast = Toast.makeText(context, "Starting Ouinet service", Toast.LENGTH_SHORT)
         toast.show()
-        ouinet!!.background.startup()
+        ouinet.background.startup()
     }
 
     fun restart(context: Context) {
@@ -66,6 +68,10 @@ class OuinetViewModel(private val ouinet: Ouinet?, private val http: HttpClient?
 
     fun isStarted(): Boolean {
         return uiState.value.state == "Started"
+    }
+
+    fun isCacheTypeEnabled(): Boolean {
+        return !isStarted()
     }
 
     fun isRequestEnabled(): Boolean {

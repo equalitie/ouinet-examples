@@ -47,6 +47,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
+    }
     namespace 'ie.equalit.ouinet_examples.android_compose'
 }
 

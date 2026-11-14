@@ -79,6 +79,13 @@ dependencies {
     else {
         implementation libs.ouinet.omni
     }
+    if (localProperties['OUISYNC_LOCAL_LIB']) {
+        project.logger.lifecycle('Substituting local AAR for Ouisync Session: ' + localProperties['OUISYNC_LOCAL_LIB'])
+        implementation(files(localProperties['OUISYNC_LOCAL_LIB']))
+    }
+    else {
+        implementation libs.ouisync.session
+    }
     implementation libs.relinker
     implementation libs.okhttp
     implementation libs.mobileproxylib

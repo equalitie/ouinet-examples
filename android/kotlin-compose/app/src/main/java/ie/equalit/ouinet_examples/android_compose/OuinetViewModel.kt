@@ -7,11 +7,14 @@ import androidx.lifecycle.ViewModel
 import ie.equalit.ouinet.OuinetEndpoint
 import ie.equalit.ouinet_examples.android_compose.components.HttpClient
 import ie.equalit.ouinet_examples.android_compose.components.Ouinet
+import ie.equalit.ouinet_examples.android_compose.components.Ouisync
 import ie.equalit.ouinet_examples.android_compose.ext.bytesToString
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.net.InetSocketAddress
 import java.net.Proxy
 import java.util.concurrent.Executors
@@ -30,7 +33,7 @@ data class OuinetUiState(
     var cacheType: String = BuildConfig.CACHE_TYPE,
 )
 
-class OuinetViewModel(private val ouinet: Ouinet?, private val http: HttpClient?) : ViewModel() {
+class OuinetViewModel(private val ouinet: Ouinet?, private val http: HttpClient?, private val ouisync: Ouisync?) : ViewModel() {
     private val mutUiState = MutableStateFlow(OuinetUiState())
     val uiState: StateFlow<OuinetUiState> = mutUiState.asStateFlow()
 
@@ -43,7 +46,14 @@ class OuinetViewModel(private val ouinet: Ouinet?, private val http: HttpClient?
         ouinet!!.setup(uiState.value.cacheType)
         val toast = Toast.makeText(context, "Starting Ouinet service", Toast.LENGTH_SHORT)
         toast.show()
-        ouinet.background.startup()
+        ouinet.background.startup() {
+            MainScope().launch {
+                // TODO: ouisync service started by ouinet must be fully started
+                // need status api to check this, temporary workaround is hard timeout
+                Thread.sleep(5000)
+                ouisync?.createSession()
+            }
+        }
     }
 
     fun restart(context: Context) {

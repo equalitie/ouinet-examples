@@ -22,6 +22,7 @@ kotlinVersion = "2.4.21"
 materialIconsExtended = "1.7.8"
 navigationComposeVersion = "2.9.0"
 ouinet_version = "1.6.8"
+ouisync_version = "0.9.2-2"
 relinker_version = "1.4.5"
 
 # Third Party
@@ -65,6 +66,7 @@ tools-testjunit = { group = "androidx.test.ext", name = "junit", version.ref = "
 tools-testjunitktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "testing_androidx_ext_junit" }
 
 ouinet-omni = { group = "ie.equalit.ouinet", name = "ouinet-omni", version.ref = "ouinet_version" }
+ouisync-session = { group = "ie.equalit.ouinet", name = "ouisync-session", version.ref = "ouisync_version" }
 relinker = { group = "com.getkeepsafe.relinker", name = "relinker", version.ref = "relinker_version" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 mobileproxylib = { module = "com.github.OutlineFoundation:mobileproxylib", version.ref = "mobileproxylib" }

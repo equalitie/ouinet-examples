@@ -8,12 +8,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material3.MaterialTheme
 import ie.equalit.ouinet_examples.android_compose.components.HttpClient
 import ie.equalit.ouinet_examples.android_compose.components.Ouinet
+import ie.equalit.ouinet_examples.android_compose.components.Ouisync
 import ie.equalit.ouinet_examples.android_compose.components.OutlineMobileproxy
 import ie.equalit.ouinet_examples.android_compose.components.PermissionHandler
 import ie.equalit.ouinet_examples.android_compose.components.PermissionHandler.Companion.PERMISSION_CODE_IGNORE_BATTERY_OPTIMIZATIONS
 
 class MainActivity : AppCompatActivity() {
     private val ouinet by lazy { Ouinet(this) }
+
+    val ouisync by lazy { Ouisync(this) }
     private val httpClient  = HttpClient()
 
     private val mobileproxy by lazy { OutlineMobileproxy(this) }
@@ -34,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         mobileproxy.setConfig()
         mobileproxy.start()
         ouinet.setup(BuildConfig.CACHE_TYPE)
-        val viewModel = OuinetViewModel(ouinet, httpClient)
+        val viewModel = OuinetViewModel(ouinet, httpClient, ouisync)
         setContent { MaterialTheme { OuinetView(viewModel) } }
     }
 

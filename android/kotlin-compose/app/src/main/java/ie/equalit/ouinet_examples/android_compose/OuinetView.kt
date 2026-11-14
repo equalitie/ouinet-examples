@@ -286,5 +286,5 @@ fun RadioButtonCacheType(uiState: OuinetUiState, enabled: Boolean, modifier: Mod
 @Preview(widthDp = 360, heightDp = 720)
 @Composable
 fun ComposablePreview() {
-    MaterialTheme { OuinetView(OuinetViewModel(null, null)) }
+    MaterialTheme { OuinetView(OuinetViewModel(null, null, null)) }
 }

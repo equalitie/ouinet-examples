@@ -86,6 +86,10 @@ dependencies {
     else {
         implementation libs.ouisync.session
     }
+    implementation libs.kotlin.serialization
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.kotlinx.datetime
+    implementation libs.msgpack.core
     implementation libs.relinker
     implementation libs.okhttp
     implementation libs.mobileproxylib

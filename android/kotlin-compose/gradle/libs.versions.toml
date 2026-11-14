@@ -16,10 +16,14 @@ gradle_kotlin_plugin = "2.4.21"
 
 # Kotlin
 junit = "4.13.2"
+kotlin_serialization = "1.11.0"
 
 # Ouinet
 kotlinVersion = "2.4.21"
+kotlinxCoroutinesCore = "1.9.0"
+kotlinxDatetime = "0.6.2"
 materialIconsExtended = "1.7.8"
+msgpackCore = "0.9.5"
 navigationComposeVersion = "2.9.0"
 ouinet_version = "1.6.8"
 ouisync_version = "0.9.2-2"
@@ -54,8 +58,12 @@ androidx-material-icons-extended = { module = "androidx.compose.material:materia
 google-material = { group = "com.google.android.material", name = "material", version.ref = "google_material" }
 
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlinVersion" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+msgpack-core = { module = "org.msgpack:msgpack-core", version.ref = "msgpackCore" }
 tools-androidgradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle_android_plugin" }
 tools-kotlingradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "gradle_kotlin_plugin" }
+kotlin-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlin_serialization" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 tools-testcore = { group = "androidx.test", name = "core", version.ref = "testing_androidx_core" }
